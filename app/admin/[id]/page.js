@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { signOut } from '../actions';
+import AdminLogo from '../logo';
 import { ADMIN_COOKIE, dataClient, getAdminUser } from '../../../lib/admin.mjs';
 
 export const dynamic = 'force-dynamic';
@@ -46,7 +47,7 @@ export default async function RegistrationPage({ params }) {
     <main className="admin-main">
       <header className="admin-header">
         <div className="admin-wrap admin-header-inner">
-          <Link className="admin-brand" href="/admin">JG Worldwide</Link>
+          <Link href="/admin" aria-label="All Brand Audit registrations"><AdminLogo className="admin-header-logo" /></Link>
           <form action={signOut}><button className="admin-signout" type="submit">Sign out</button></form>
         </div>
       </header>

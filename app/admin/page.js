@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { signOut } from './actions';
+import AdminLogo from './logo';
 import {
   ADMIN_COOKIE,
   ADMIN_PAGE_SIZE,
@@ -45,7 +46,7 @@ export default async function AdminPage({ searchParams }) {
     <main className="admin-main">
       <header className="admin-header">
         <div className="admin-wrap admin-header-inner">
-          <span className="admin-brand">JG Worldwide</span>
+          <AdminLogo className="admin-header-logo" />
           <form action={signOut}><button className="admin-signout" type="submit">Sign out</button></form>
         </div>
       </header>
