@@ -1,12 +1,13 @@
-# Brand Audit submission API
+# Brand Audit API and admin
 
-This is a small Next.js API for the Brand Audit form already embedded in Webflow. Vercel runs `POST /api/register`; Supabase stores the registration and an optional payment receipt. The form remains in `../jgw-brand-audit-webflow-embed.html`.
+This Next.js app serves `POST /api/register` for the Brand Audit form embedded in Webflow and a private, read-only admin at `/admin`. Supabase stores registrations and optional payment receipts. The form remains in `../jgw-brand-audit-webflow-embed.html`.
 
 ## One-time Supabase setup
 
 1. In the Supabase project at `https://dmhcuxukzjwhwglfbsbl.supabase.co`, run [`supabase/001_brand_audit_registrations.sql`](supabase/001_brand_audit_registrations.sql) in the SQL Editor. This creates the registration table with Row Level Security enabled and no public read/write grant.
 2. In Supabase Storage, create a **private** bucket named `brand-audit-proofs`. Set its maximum file size to **3 MB** and allow `image/png`, `image/jpeg`, `image/webp`, and `application/pdf`. Do not make receipts public.
-3. From Supabase API Keys, copy a server-only **secret** key (`sb_secret_...`). Put it in Vercel as `SUPABASE_SECRET_KEY`. Do not put it in Webflow, in a `NEXT_PUBLIC_` variable, or in source control. The publishable key supplied for this project is valid for browser clients, but this API does not need it.
+3. From Supabase API Keys, copy a server-only **secret** key (`sb_secret_...`). Put it in Vercel as `SUPABASE_SECRET_KEY`. Do not put it in Webflow, in a `NEXT_PUBLIC_` variable, or in source control.
+4. In Supabase Authentication → Users, create an email/password user for each admin. Copy each user's **User UID** into `ADMIN_USER_IDS` in Vercel, separated by commas. The admin sign-in uses Supabase Auth, but only listed user IDs can view registrations.
 
 ## Vercel settings
 
@@ -16,17 +17,21 @@ Deploy the `brand-audit-api-vercel` folder as the Vercel project's **Root Direct
 | --- | --- |
 | `SUPABASE_URL` | `https://dmhcuxukzjwhwglfbsbl.supabase.co` |
 | `SUPABASE_SECRET_KEY` | Your server-only Supabase secret key |
+| `SUPABASE_PUBLISHABLE_KEY` | The project's `sb_publishable_...` key, used by the server for admin sign-in |
+| `ADMIN_USER_IDS` | Comma-separated Supabase Auth User UIDs allowed into `/admin` |
 | `ALLOWED_ORIGINS` | Comma-separated exact Webflow origins, e.g. `https://www.jgworldwide.ph,https://jgworldwide.ph,https://jgwebsite.webflow.io` |
 
-After deploying, set `data-api-url` on the `<form>` in `../jgw-brand-audit-webflow-embed.html` to `https://YOUR-VERCEL-DOMAIN/api/register`, then paste the updated embed into Webflow and publish that page. The empty value is deliberate: until you set it, the button cannot transmit a registration.
+After deploying, open `https://YOUR-VERCEL-DOMAIN/admin`. The admin lists 25 submissions per page; each entry has a detail page and, when supplied, a protected proof download. Sessions last up to one hour, after which the admin signs in again. The pages are server-rendered and are never intended as public links.
+
+The Webflow form's `data-api-url` must point to `https://YOUR-VERCEL-DOMAIN/api/register`. The current embed already points to the deployed JGW Vercel domain.
 
 ## Checks
 
-Run `npm test` and `npm run build` from this folder. After configuration, submit one test registration from the published Webflow page. Confirm its row appears in `brand_audit_registrations`; if you include a receipt, confirm it appears only in the private `brand-audit-proofs` bucket. The API returns a registration ID but no personal details.
+Run `npm test` and `npm run build` from this folder. After configuration, submit one test registration from the published Webflow page. Confirm its row appears at `/admin`; if you include a receipt, confirm its download requires admin sign-in. The API returns a registration ID but no personal details.
 
 Receipts are limited to 3 MB because Vercel Functions limit the whole request body to 4.5 MB. The API checks the file signature as well as the declared type. On a database failure after upload, it attempts to remove the uploaded receipt.
 
-Payment verification and confirmation messages remain manual. The GCash QR image is not included in the Webflow embed because the screenshot did not provide a reusable source asset.
+Payment verification and confirmation messages remain manual. The approved GCash QR image is linked from the Webflow embed.
 
 ## Rollback
 
