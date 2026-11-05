@@ -1,4 +1,5 @@
-import { ADMIN_COOKIE, dataClient, getAdminUser, proofMetadata } from '../../../../lib/admin.mjs';
+import { dataClient, proofMetadata } from '../../../../lib/admin.mjs';
+import { currentAdmin } from '../../../../lib/admin-session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -6,7 +7,7 @@ export const dynamic = 'force-dynamic';
 const noStore = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' };
 
 export async function GET(request, { params }) {
-  const user = await getAdminUser(request.cookies.get(ADMIN_COOKIE)?.value);
+  const user = await currentAdmin();
   if (!user) return new Response('Unauthorized', { status: 401, headers: noStore });
 
   const { id } = await params;

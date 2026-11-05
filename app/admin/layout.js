@@ -1,4 +1,5 @@
 import './admin.css';
+import { SessionSync } from './ui';
 
 export const metadata = {
   title: 'Brand Audit registrations | JG Worldwide',
@@ -6,5 +7,5 @@ export const metadata = {
 };
 
 export default function AdminLayout({ children }) {
-  return <div className="admin-surface">{children}</div>;
+  return <div className="admin-surface"><SessionSync />{children}</div>;
 }

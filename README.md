@@ -21,13 +21,21 @@ Deploy the `brand-audit-api-vercel` folder as the Vercel project's **Root Direct
 | `ADMIN_USER_IDS` | Comma-separated Supabase Auth User UIDs allowed into `/admin` |
 | `ALLOWED_ORIGINS` | Comma-separated exact Webflow origins, e.g. `https://www.jgworldwide.ph,https://jgworldwide.ph,https://jgwebsite.webflow.io` |
 
-After deploying, open `https://YOUR-VERCEL-DOMAIN/admin`. The admin lists 25 submissions per page; each entry has a detail page and, when supplied, a protected proof download. Sessions last up to one hour, after which the admin signs in again. The pages are server-rendered and are never intended as public links.
+After deploying, open `https://YOUR-VERCEL-DOMAIN/admin`. The admin has search, payment filters, and 25/50/100 rows per page. Brand names and View buttons open a dialog with the full registration and protected proof download; the table remains in place. Existing detail URLs still work. Navigation, forms, refresh, and downloads show progress; route transitions include a skeleton. The workshop fee is ₱1,000 per person. The Webflow form shows a success dialog only after the API confirms a saved registration.
+
+Admin sessions use persistent HttpOnly cookies (30-day browser retention) and Supabase refresh tokens. Active sessions refresh on requests and while the page is active. Supabase session expiry/revocation policies still apply. Signed-in visitors are redirected away from `/admin/login`, including after browser Back. Users signed in with the previous access-token-only version should sign out and back in once after upgrading.
+
+Each browser/device receives its own session even when using the same account. Signing out uses Supabase's **local** scope, leaving other devices signed in. In Supabase Auth session settings, keep **Single session per user** disabled for shared-account use. Same-browser tabs share the session and recheck it on focus. No credentials or registration data are placed in localStorage.
+
+Run [`supabase/002_admin_pagination.sql`](supabase/002_admin_pagination.sql) in the Supabase SQL Editor to add indexes for the dashboard's stable date/ID ordering and payment filter. It does not modify existing entries. Search runs on the server, and only one page of records is sent to the browser.
 
 The Webflow form's `data-api-url` must point to `https://YOUR-VERCEL-DOMAIN/api/register`. The current embed already points to the deployed JGW Vercel domain.
 
 ## Checks
 
 Run `npm test` and `npm run build` from this folder. After configuration, submit one test registration from the published Webflow page. Confirm its row appears at `/admin`; if you include a receipt, confirm its download requires admin sign-in. The API returns a registration ID but no personal details.
+
+After building, run `node scripts/verify-admin-http.mjs` for an HTTP integration check. It starts local mock Auth/database services, checks sign-in/refresh/redirects/pagination and independent browser logout, then stops the processes. It never uses production registrations. It requires local port 8876.
 
 Receipts are limited to 3 MB because Vercel Functions limit the whole request body to 4.5 MB. The API checks the file signature as well as the declared type. On a database failure after upload, it attempts to remove the uploaded receipt.
 

@@ -1,5 +1,8 @@
 import { signIn } from '../actions';
 import AdminLogo from '../logo';
+import { redirect } from 'next/navigation';
+import { currentAdmin } from '../../../lib/admin-session';
+import { SubmitButton } from '../ui';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,6 +13,7 @@ const messages = {
 };
 
 export default async function LoginPage({ searchParams }) {
+  if (await currentAdmin()) redirect('/admin');
   const { error } = await searchParams;
   const message = typeof error === 'string' && Object.hasOwn(messages, error)
     ? messages[error]
@@ -33,7 +37,7 @@ export default async function LoginPage({ searchParams }) {
             <input id="admin-email" name="email" type="email" autoComplete="username" required />
             <label htmlFor="admin-password">Password</label>
             <input id="admin-password" name="password" type="password" autoComplete="current-password" required />
-            <button className="admin-button" type="submit">Sign in</button>
+            <SubmitButton className="admin-button" pendingLabel="Signing in…">Sign in</SubmitButton>
           </form>
         </div>
       </div>
