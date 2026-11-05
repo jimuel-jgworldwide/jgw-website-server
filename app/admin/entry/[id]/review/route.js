@@ -17,7 +17,7 @@ export async function POST(request, { params }) {
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) return Response.json({ error: 'Invalid registration.' }, { status: 400, headers });
   const input = await request.json().catch(() => null);
-  if (!['approve','receipt','approval'].includes(input?.action)) return Response.json({ error: 'Invalid action.' }, { status: 400, headers });
+  if (!['approve','approval'].includes(input?.action)) return Response.json({ error: 'Invalid action.' }, { status: 400, headers });
   if (input.action === 'approve' && input.confirmReviewed !== true) return Response.json({ error: 'Confirm that the payment has been reviewed.' }, { status: 400, headers });
   try {
     const client = dataClient();
@@ -30,7 +30,7 @@ export async function POST(request, { params }) {
     } else if (input.action === 'approval' && record.data.payment_status !== 'approved') {
       return Response.json({ error: 'Review and approve the payment before sending confirmation.' }, { status: 409, headers });
     }
-    const kind = input.action === 'receipt' ? 'receipt' : 'approval';
+    const kind = 'approval';
     // Unique key preserves an existing job, including its sent status.
     const queued = await client.from('brand_audit_email_outbox').upsert({ registration_id: id, kind }, { onConflict: 'registration_id,kind', ignoreDuplicates: true });
     if (queued.error) throw queued.error;
