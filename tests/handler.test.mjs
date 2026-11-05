@@ -97,6 +97,16 @@ test('removes a private receipt if database insert fails', async () => {
   assert.equal((await response.json()).error.includes('database unavailable'), false);
 });
 
+test('email failure does not roll back a saved registration or delete its proof', async () => {
+  const { client, calls } = fakeClient();
+  const response = await handleRegistration(request(ORIGIN, validForm(true)), {
+    allowedOrigins, getClient: () => client, logError: () => {},
+    afterSave: async () => { throw new Error('SMTP unavailable'); },
+  });
+  assert.equal(response.status, 201);
+  assert.deepEqual(calls.map(call => call[0]), ['upload', 'insert']);
+});
+
 test('returns a helpful validation error without contacting Supabase', async () => {
   const form = validForm();
   form.delete('email');

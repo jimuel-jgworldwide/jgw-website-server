@@ -5,6 +5,7 @@ import { useFormStatus } from 'react-dom';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowUpRight, Download, LoaderCircle, RefreshCw, Search, X } from 'lucide-react';
+import { ProofPreview, ReviewPanel } from './payment-ui';
 
 export function DetailsButton({ id, children, className = 'admin-view-link' }) {
   const dialog = useRef(null);
@@ -31,7 +32,7 @@ export function DetailsButton({ id, children, className = 'admin-view-link' }) {
     ['Company', entry.company], ['Job title / role', entry.job_title], ['Brand', entry.brand_name],
     ['Industry', entry.industry === 'Other' ? entry.industry_other : entry.industry], ['Website and social links', entry.website_social_links],
     ['Participants', entry.participants], ['Additional participants', entry.additional_participants],
-    ['Fee', '₱1,000 per person'], ['Payment method', entry.payment_method],
+    ['Fee', '₱1,000 per head'], ['Payment method', entry.payment_method],
     ['Information accuracy', entry.confirm_accuracy ? 'Confirmed' : 'Not confirmed'],
     ['Registration verification', entry.confirm_verification ? 'Confirmed' : 'Not confirmed'],
     ['Cancellation policy', entry.confirm_policy ? 'Confirmed' : 'Not confirmed'],
@@ -42,7 +43,7 @@ export function DetailsButton({ id, children, className = 'admin-view-link' }) {
       <div className="admin-dialog-body" aria-busy={busy}>
         {busy && <div role="status"><span className="admin-sr-only">Loading registration</span>{Array.from({ length: 6 }, (_, i) => <div className="admin-skeleton-row" key={i}><div className="admin-skeleton" /><div className="admin-skeleton" /></div>)}</div>}
         {error && <div role="alert"><p className="admin-alert">{error}</p><button className="admin-control" onClick={open}>Try again</button></div>}
-        {entry && <><p className="admin-dialog-date">Received {new Intl.DateTimeFormat('en-PH', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Manila' }).format(new Date(entry.created_at))}</p><dl>{fields.map(([label, value]) => <div className="admin-detail-row" key={label}><dt>{label}</dt><dd>{value || '—'}</dd></div>)}</dl><div className="admin-dialog-proof">{entry.hasProof ? <DownloadProof href={`/admin/proof/${entry.id}`} /> : 'No payment proof uploaded.'}</div></>}
+        {entry && <><p className="admin-dialog-date">Received {new Intl.DateTimeFormat('en-PH', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Manila' }).format(new Date(entry.created_at))}</p><ReviewPanel entry={entry} onUpdate={setEntry} /><dl>{fields.map(([label, value]) => <div className="admin-detail-row" key={label}><dt>{label}</dt><dd>{value || '—'}</dd></div>)}</dl><div className="admin-dialog-proof">{entry.hasProof ? <ProofPreview id={entry.id} type={entry.proofType} /> : 'No payment proof uploaded.'}</div></>}
       </div>
     </dialog></>;
 }

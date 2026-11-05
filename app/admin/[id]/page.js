@@ -5,6 +5,8 @@ import AdminLogo from '../logo';
 import { dataClient } from '../../../lib/admin.mjs';
 import { currentAdmin } from '../../../lib/admin-session';
 import { SubmitButton, PendingLink, DownloadProof } from '../ui';
+import { ProofPreview } from '../payment-ui';
+import { proofMetadata } from '../../../lib/admin.mjs';
 
 export const dynamic = 'force-dynamic';
 
@@ -86,7 +88,8 @@ export default async function RegistrationPage({ params }) {
             <Detail label="Participants" value={row.participants} />
             <Detail label="Additional participants" value={row.additional_participants} />
             <Detail label="Payment method" value={row.payment_method} />
-            <Detail label="Workshop fee" value="₱1,000 per person" />
+            <Detail label="Payment review" value={row.payment_status === 'approved' ? 'Approved' : 'Pending review'} />
+            <Detail label="Workshop fee" value="₱1,000 per head" />
             <Detail label="Proof of payment" value={row.proof_path
               ? <DownloadProof href={`/admin/proof/${row.id}`} />
               : 'No proof uploaded'} />
@@ -101,6 +104,7 @@ export default async function RegistrationPage({ params }) {
             <Detail label="Cancellation policy" value={row.confirm_policy ? 'Confirmed' : 'Not confirmed'} />
           </dl>
         </section>
+        {row.proof_path && <ProofPreview id={row.id} type={proofMetadata(row.proof_path).contentType} />}
       </div>
     </main>
   );

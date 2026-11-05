@@ -1,6 +1,8 @@
 # Brand Audit API and admin
 
-This Next.js app serves `POST /api/register` for the Brand Audit form embedded in Webflow and a private, read-only admin at `/admin`. Supabase stores registrations and optional payment receipts. The form remains in `../jgw-brand-audit-webflow-embed.html`.
+The current Webflow embed is versioned at [`webflow/jgw-brand-audit-webflow-embed.html`](webflow/jgw-brand-audit-webflow-embed.html). Paste this file into Webflow separately when publishing form changes; deploying the Next.js app does not update the Webflow page.
+
+This Next.js app serves `POST /api/register` for the Brand Audit form embedded in Webflow and a private payment-review admin at `/admin`. Supabase stores registrations, private payment receipts, review status, and queued email jobs. The form remains in `../jgw-brand-audit-webflow-embed.html`.
 
 ## One-time Supabase setup
 
@@ -21,7 +23,7 @@ Deploy the `brand-audit-api-vercel` folder as the Vercel project's **Root Direct
 | `ADMIN_USER_IDS` | Comma-separated Supabase Auth User UIDs allowed into `/admin` |
 | `ALLOWED_ORIGINS` | Comma-separated exact Webflow origins, e.g. `https://www.jgworldwide.ph,https://jgworldwide.ph,https://jgwebsite.webflow.io` |
 
-After deploying, open `https://YOUR-VERCEL-DOMAIN/admin`. The admin has search, payment filters, and 25/50/100 rows per page. Brand names and View buttons open a dialog with the full registration and protected proof download; the table remains in place. Existing detail URLs still work. Navigation, forms, refresh, and downloads show progress; route transitions include a skeleton. The workshop fee is ₱1,000 per person. The Webflow form shows a success dialog only after the API confirms a saved registration.
+After deploying, open `https://YOUR-VERCEL-DOMAIN/admin`. The admin has search, payment filters, and 25/50/100 rows per page. Brand names and View buttons open a dialog with the full registration and protected proof download; the table remains in place. Existing detail URLs still work. Navigation, forms, refresh, and downloads show progress; route transitions include a skeleton. The workshop fee is ₱1,000 per head. The Webflow form shows a success dialog only after the API confirms a saved registration.
 
 Admin sessions use persistent HttpOnly cookies (30-day browser retention) and Supabase refresh tokens. Active sessions refresh on requests and while the page is active. Supabase session expiry/revocation policies still apply. Signed-in visitors are redirected away from `/admin/login`, including after browser Back. Users signed in with the previous access-token-only version should sign out and back in once after upgrading.
 
@@ -39,7 +41,9 @@ After building, run `node scripts/verify-admin-http.mjs` for an HTTP integration
 
 Receipts are limited to 3 MB because Vercel Functions limit the whole request body to 4.5 MB. The API checks the file signature as well as the declared type. On a database failure after upload, it attempts to remove the uploaded receipt.
 
-Payment verification and confirmation messages remain manual. The approved GCash QR image is linked from the Webflow embed.
+Payment verification is manual. Admins preview image/PDF proofs and explicitly approve full payment; approval queues an automatic confirmation email. Registration receipt emails are queued automatically on submission. Failed/unsent email jobs can be retried from the entry panel. The approved GCash QR image is linked from the Webflow embed.
+
+Before deploying payment review, run `supabase/003_payment_review_email.sql`. Configure Gmail using [GMAIL_SETUP.md](GMAIL_SETUP.md); it documents the app-password setup, existing-mailbox costs and quotas, receiving replies, and testing. Until Gmail is configured, emails stay queued. Existing entries start pending and are not automatically emailed receipts.
 
 ## Rollback
 

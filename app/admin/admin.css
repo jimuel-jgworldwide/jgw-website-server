@@ -84,6 +84,21 @@
 .admin-dialog-date { margin: 0 0 24px; color: var(--muted); font-size: .875rem; }
 .admin-dialog-body dl { margin: 0; }
 .admin-dialog-proof { margin-top: 24px; }
+.admin-proof-preview h3, .admin-review-panel h3 { margin: 0 0 16px; font-size: 1.125rem; }
+.admin-proof-preview img { display: block; width: auto; max-width: 100%; height: auto; max-height: 540px; margin-inline: auto; object-fit: contain; }
+.admin-proof-preview iframe { width: 100%; min-height: 500px; border: 1px solid var(--rule); border-radius: 8px; }
+.admin-proof-preview > p { display: flex; align-items: center; gap: 10px; }
+.admin-proof-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.admin-review-panel { margin-bottom: 28px; padding: 22px; border: 1px solid var(--rule); border-radius: 12px; background: #f7f8f6; }
+.admin-review-status { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 6px; background: #fff2bd; color: #684600; font-size: .8125rem; white-space: nowrap; }
+.admin-review-status.is-approved { background: #e7f3e9; color: #245137; }
+.admin-review-check { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0; }
+.admin-review-check input { width: 18px; height: 18px; flex: none; margin-top: 3px; accent-color: var(--ink); }
+.admin-approve { background: var(--yellow); border-color: var(--yellow); }
+.admin-email-status { display: grid; gap: 12px; margin-top: 24px; }
+.admin-email-status > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.admin-email-status small { display: block; color: var(--muted); text-transform: capitalize; }
+.admin-review-message { margin-bottom: 0; padding-top: 12px; color: var(--muted); }
 .admin-table .admin-brand-link { width: 100%; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: inherit; cursor: pointer; }
 body:has(.admin-entry-dialog[open]) { overflow: hidden; }
 .admin-surface .admin-button { font-size: 1rem; font-weight: 700; }
