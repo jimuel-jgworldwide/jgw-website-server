@@ -535,8 +535,11 @@
   .jgw-ba__success-art i:nth-of-type(even) { background: var(--ink); width: 5px; height: 10px; }
   .jgw-ba .jgw-ba__success h2 { margin: 0 0 18px; font: 400 clamp(2rem, 4vw, 2.75rem)/1.12 'Abril Fatface', Georgia, serif; letter-spacing: -.025em; text-wrap: balance; outline: none; }
   .jgw-ba .jgw-ba__success p { max-width: 44ch; margin: 0 auto 18px; color: var(--muted); }
-  .jgw-ba .jgw-ba__success .jgw-ba__success-next { margin-top: 24px; padding: 18px 22px; border-radius: 10px; background: #f4f5f1; font-size: .9375rem; }
-  .jgw-ba .jgw-ba__success .jgw-ba__success-next strong { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 700; }
+  .jgw-ba .jgw-ba__success-copy { margin-bottom: 22px; }
+  .jgw-ba__success-event { display: grid; gap: 4px; max-width: 44ch; margin: 0 auto 22px; padding: 16px 18px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); color: var(--ink); font-size: .9375rem; line-height: 1.45; }
+  .jgw-ba .jgw-ba__success-event p { margin: 0; color: inherit; }
+  .jgw-ba__success-event p:first-child { font-weight: 700; }
+  .jgw-ba .jgw-ba__success-signoff { margin-bottom: 24px; color: var(--ink); font-weight: 700; }
   .jgw-ba__success .jgw-ba__button { width: 100%; margin-top: 10px; }
   body:has(.jgw-ba__success[open]) { overflow: hidden; }
   .jgw-ba__success[open] { animation: jgw-ba-dialog-in .28s cubic-bezier(.16,1,.3,1) both; }
@@ -999,8 +1002,13 @@
       <i style="--x:-84px;--y:-48px;--r:-25deg"></i><i style="--x:72px;--y:-55px;--r:30deg"></i><i style="--x:82px;--y:32px;--r:65deg"></i><i style="--x:-87px;--y:33px;--r:-40deg"></i><i style="--x:35px;--y:-79px;--r:20deg"></i><i style="--x:-44px;--y:-75px;--r:70deg"></i>
     </div>
     <h2 id="jgw-ba-success-title" tabindex="-1" autofocus>Registration received.</h2>
-    <p id="jgw-ba-success-description">Thank you for registering for Brand Audit: Let’s Get You Ready for 2027!</p>
-    <p class="jgw-ba__success-next"><strong>What happens next?</strong>Your slot will be confirmed after your registration and payment have been verified.</p>
+    <p id="jgw-ba-success-description">You’re one step closer to getting your brand ready for 2027!</p>
+    <p class="jgw-ba__success-copy">Your registration for Brand Audit: Let’s Get You Ready for 2027 has been received. Get ready for fresh insights, practical tips, and strategies to help your brand level up!</p>
+    <div class="jgw-ba__success-event" aria-label="Workshop details">
+      <p>November 27, 2026 (Friday)</p>
+      <p>1907 One Park Drive, BGC, Taguig</p>
+    </div>
+    <p class="jgw-ba__success-signoff">We can’t wait to see you there!</p>
     <button class="jgw-ba__button" type="button" data-close-success>Back to registration</button>
     <button class="jgw-ba__success-close" type="button" data-close-success aria-label="Close registration confirmation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
   </dialog>
