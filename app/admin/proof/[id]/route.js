@@ -32,7 +32,8 @@ export async function GET(request, { params }) {
       headers: {
         ...noStore,
         'Content-Type': contentType,
-        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Disposition': `${request.nextUrl.searchParams.get('preview') === '1' ? 'inline' : 'attachment'}; filename="${filename}"`,
+        'Content-Security-Policy': "frame-ancestors 'self'",
       },
     });
   } catch {

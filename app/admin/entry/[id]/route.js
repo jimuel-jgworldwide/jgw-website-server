@@ -1,5 +1,5 @@
 import { currentAdmin } from '../../../../lib/admin-session';
-import { dataClient } from '../../../../lib/admin.mjs';
+import { dataClient, proofMetadata } from '../../../../lib/admin.mjs';
 
 const headers = { 'Cache-Control': 'private, no-store' };
 export async function GET(request, { params }) {
@@ -11,6 +11,7 @@ export async function GET(request, { params }) {
     if (error) throw error;
     if (!data) return Response.json({ error: 'Registration not found.' }, { status: 404, headers });
     const { proof_path, ...entry } = data;
-    return Response.json({ entry: { ...entry, hasProof: Boolean(proof_path) } }, { headers });
+    const emails = await dataClient().from('brand_audit_email_outbox').select('kind,status,sent_at,last_error,claimed_at').eq('registration_id', id);
+    return Response.json({ entry: { ...entry, hasProof: Boolean(proof_path), proofType: proof_path ? proofMetadata(proof_path).contentType : null, emails: emails.data ?? [], reviewReady: !emails.error && Boolean(data.payment_status) } }, { headers });
   } catch { return Response.json({ error: 'Could not load this registration. Please try again.' }, { status: 500, headers }); }
 }

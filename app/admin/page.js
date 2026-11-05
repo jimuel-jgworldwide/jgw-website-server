@@ -27,7 +27,7 @@ export default async function AdminPage({ searchParams }) {
   let rows = [], total = 0, loadError = false;
   try {
     let query = dataClient().from('brand_audit_registrations')
-      .select('id,created_at,full_name,email,brand_name,company,payment_method,proof_path', { count: 'exact' });
+      .select('id,created_at,full_name,email,brand_name,company,payment_method,proof_path,payment_status', { count: 'exact' });
     if (payment) query = query.eq('payment_method', payment);
     if (search) query = query.or(`full_name.ilike.%${search}%,brand_name.ilike.%${search}%,email.ilike.%${search}%,company.ilike.%${search}%`);
     const result = await query.order('created_at', { ascending: false }).order('id', { ascending: false }).range(start, start + size - 1);
@@ -52,12 +52,13 @@ export default async function AdminPage({ searchParams }) {
         {loadError ? <div className="admin-table-empty"><p className="admin-alert" role="alert">Registrations could not be loaded. Try refreshing the page.</p><RefreshButton /></div>
           : rows.length === 0 ? <div className="admin-table-empty"><Inbox size={32} aria-hidden="true" /><h3>{search || payment ? 'No matching registrations' : 'No registrations yet'}</h3><p>{search || payment ? 'Try another search or clear your filters.' : 'New submissions will appear here.'}</p>{(search || payment) && <PendingLink className="admin-control" href="/admin">Clear filters</PendingLink>}</div>
           : <div className="admin-table-scroll" role="region" aria-label="Registrations table" tabIndex={0}><table className="admin-table"><caption className="admin-sr-only">Registration entries, newest first</caption>
-            <thead><tr><th scope="col">Brand / company</th><th scope="col">Participant</th><th scope="col">Payment method</th><th scope="col">Payment proof</th><th scope="col">Received</th><th scope="col"><span className="admin-sr-only">Details</span></th></tr></thead>
+            <thead><tr><th scope="col">Brand / company</th><th scope="col">Participant</th><th scope="col">Payment method</th><th scope="col">Payment proof</th><th scope="col">Review</th><th scope="col">Received</th><th scope="col"><span className="admin-sr-only">Details</span></th></tr></thead>
             <tbody>{rows.map(row => <tr key={row.id}>
               <th scope="row"><DetailsButton className="admin-brand-link" id={row.id}><span><strong>{row.brand_name}</strong><small>{row.company}</small></span></DetailsButton></th>
               <td><strong>{row.full_name}</strong><small>{row.email}</small></td>
               <td><span className="admin-payment-badge">{row.payment_method}</span></td>
               <td><span className={`admin-proof-badge ${row.proof_path ? 'has-proof' : ''}`}>{row.proof_path ? <FileCheck2 size={15} aria-hidden="true" /> : <FileMinus2 size={15} aria-hidden="true" />}{row.proof_path ? 'Attached' : 'Not uploaded'}</span></td>
+              <td><span className={`admin-review-status ${row.payment_status === 'approved' ? 'is-approved' : ''}`}>{row.payment_status === 'approved' ? 'Approved' : 'Pending review'}</span></td>
               <td><time dateTime={row.created_at}>{dateFormatter.format(new Date(row.created_at))}</time></td>
               <td><DetailsButton id={row.id}>View<span className="admin-sr-only"> {row.brand_name}</span></DetailsButton></td>
             </tr>)}</tbody>

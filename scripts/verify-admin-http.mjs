@@ -8,6 +8,7 @@ const id = 'f97ed9da-b30b-4745-9509-2762a81a317f';
 const user = { id, aud: 'authenticated', email: 'admin@example.test' };
 const rows = Array.from({ length: 30 }, (_, i) => ({ id: randomUUID(), created_at: new Date(2026, 9, 1, 10, i).toISOString(), full_name: `Test Person ${i}`, email: `test${i}@example.test`, brand_name: `Test Brand ${i}`, company: 'Test Company', payment_method: 'GCash', proof_path: null }));
 let refreshes = 0, localLogouts = 0;
+rows[0].proof_path = `${rows[0].id}/proof.png`;
 function jwt(exp) {
   const enc = value => Buffer.from(JSON.stringify(value)).toString('base64url');
   return `${enc({ alg: 'HS256', typ: 'JWT' })}.${enc({ sub: id, exp, iat: Math.floor(Date.now() / 1000), aud: 'authenticated', session_id: randomUUID() })}.c2lnbmF0dXJl`;
@@ -22,6 +23,7 @@ const mock = createServer(async (req, res) => {
     res.end(JSON.stringify({ access_token: jwt(Math.floor(Date.now() / 1000) + expires), refresh_token: randomUUID(), expires_in: expires, expires_at: Math.floor(Date.now() / 1000) + expires, token_type: 'bearer', user }));
   } else if (url.pathname.endsWith('/user')) res.end(JSON.stringify(user));
   else if (url.pathname.endsWith('/logout')) { if (url.searchParams.get('scope') === 'local') localLogouts++; res.statusCode = 204; res.end(); }
+  else if (url.pathname.startsWith('/storage/v1/object/')) { res.setHeader('content-type', 'image/png'); res.end(Buffer.from([137,80,78,71,13,10,26,10])); }
   else if (url.pathname.startsWith('/rest/v1/')) {
     const offset = Number(url.searchParams.get('offset') ?? 0), limit = Number(url.searchParams.get('limit') ?? 25);
     res.setHeader('content-range', `${offset}-${Math.min(offset + limit, rows.length) - 1}/${rows.length}`);
@@ -64,6 +66,7 @@ try {
   assert.equal(unauth.headers.get('location'), '/admin/login');
   assert.equal((await request(`/admin/proof/${rows[0].id}`, first)).status, 401);
   assert.equal((await request(`/admin/entry/${rows[0].id}`, first)).status, 401);
+  assert.equal((await request(`/admin/entry/${rows[0].id}/review`, first, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'approve', confirmReviewed: true }) })).status, 401);
   for (const jar of [first, second]) {
     const login = await (await request('/admin/login', jar)).text();
     const signedIn = await action('/admin/login', jar, login, { email: user.email, password: 'test-only' });
@@ -81,8 +84,14 @@ try {
   assert.equal(details.status, 200);
   const payload = await details.json();
   assert.equal(payload.entry.id, rows[0].id);
-  assert.equal(payload.entry.hasProof, false);
+  assert.equal(payload.entry.hasProof, true);
   assert.equal('proof_path' in payload.entry, false);
+  const preview = await request(`/admin/proof/${rows[0].id}?preview=1`, first);
+  assert.equal(preview.status, 200);
+  assert.match(preview.headers.get('content-disposition'), /^inline;/);
+  assert.equal(preview.headers.get('content-type'), 'image/png');
+  assert.match((await request(`/admin/proof/${rows[0].id}`, first)).headers.get('content-disposition'), /^attachment;/);
+  assert.equal((await request(`/admin/entry/${rows[0].id}/review`, first, { method: 'POST', headers: { Origin: 'https://untrusted.example' }, body: '{}' })).status, 403);
   const secondPage = await (await request('/admin?page=2', first)).text();
   assert.match(secondPage, /26.*30 of 30 registrations/);
   const dashboard = await (await request('/admin', first)).text();

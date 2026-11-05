@@ -1,0 +1,1116 @@
+<!-- JG Worldwide Brand Audit. Paste this entire snippet into one Webflow Embed. -->
+<!-- This form submits to the deployed Vercel /api/register endpoint. -->
+<!-- The GCash QR is loaded from the supplied Webflow CDN image URL. -->
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Roboto:wght@400;500;700&display=swap");
+  .w-embed:has(> .jgw-ba) {
+    padding: 0;
+    margin: 0;
+  }
+  body:has(> .jgw-ba) {
+    margin: 0;
+  }
+  .jgw-ba {
+    --ink: #000f13;
+    --yellow: #ffcc01;
+    --muted: #455457;
+    --rule: #d9dfe0;
+    width: 100%;
+    background: #fff;
+    color: var(--ink);
+    color-scheme: light;
+    font:
+      400 1rem/1.5 "Roboto",
+      Arial,
+      sans-serif;
+    isolation: isolate;
+  }
+  .jgw-ba,
+  .jgw-ba *,
+  .jgw-ba *::before,
+  .jgw-ba *::after {
+    box-sizing: border-box;
+  }
+  .jgw-ba :is(h1, h2, h3, p, ul, fieldset, legend, dl) {
+    margin: 0;
+  }
+  .jgw-ba a {
+    color: inherit;
+  }
+  .jgw-ba ::selection {
+    background: var(--yellow);
+    color: var(--ink);
+  }
+  .jgw-ba dl.jgw-ba__wrap { margin-inline: auto; }
+  .jgw-ba__wrap {
+    width: min(100%, 1440px);
+    margin-inline: auto;
+    padding-inline: 5%;
+  }
+  .jgw-ba__hero {
+    border-top: 8px solid var(--yellow);
+    background: var(--ink);
+    color: #fff;
+  }
+  .jgw-ba__hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: clamp(48px, 7vw, 112px);
+    align-items: start;
+    padding-block: clamp(80px, 7vw, 112px) clamp(72px, 7vw, 96px);
+  }
+  .jgw-ba__title {
+    max-width: 15ch;
+    font:
+      400 clamp(2.75rem, 4vw, 4rem)/1.1 "Abril Fatface",
+      Georgia,
+      serif;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .jgw-ba__hero-copy {
+    max-width: 54ch;
+  }
+  .jgw-ba__lead {
+    font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .jgw-ba__hero-copy p + p {
+    margin-top: 18px;
+  }
+  .jgw-ba__hero-copy p:not(.jgw-ba__lead) {
+    color: #d5dfe0;
+  }
+  .jgw-ba__event {
+    background: #f3f3f1;
+  }
+  .jgw-ba__facts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 0;
+    padding-block: 32px;
+  }
+  .jgw-ba__fact {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    min-width: 0;
+    padding: 0 clamp(20px, 3vw, 48px);
+    border-left: 1px solid #cad3d3;
+  }
+  .jgw-ba__fact:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .jgw-ba__fact dt {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .jgw-ba__fact dd {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .jgw-ba__fact--offer dd {
+    font-weight: 700;
+  }
+  .jgw-ba__main {
+    display: grid;
+    grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
+    gap: clamp(48px, 7vw, 112px);
+    padding-block: clamp(72px, 8vw, 112px) clamp(64px, 7vw, 96px);
+  }
+  .jgw-ba__aside {
+    position: sticky;
+    top: 112px;
+    align-self: start;
+    padding-top: 42px;
+  }
+  .jgw-ba__aside h2 {
+    max-width: 12ch;
+    font:
+      400 clamp(2rem, 2.9vw, 3rem)/1.1 "Abril Fatface",
+      Georgia,
+      serif;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .jgw-ba__aside p {
+    max-width: 34ch;
+    margin-top: 18px;
+    color: var(--muted);
+  }
+  .jgw-ba__aside-line {
+    display: block;
+    width: 48px;
+    height: 6px;
+    margin-top: 30px;
+    border-radius: 999px;
+    background: var(--yellow);
+  }
+  .jgw-ba__form {
+    min-width: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .jgw-ba__section {
+    min-width: 0;
+    padding: 42px 0 48px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .jgw-ba__section:last-of-type {
+    padding-bottom: 32px;
+  }
+  .jgw-ba .jgw-ba__section-title {
+    margin-bottom: 28px;
+    font:
+      400 clamp(1.75rem, 2.2vw, 2.25rem)/1.12 "Abril Fatface",
+      Georgia,
+      serif;
+    letter-spacing: -0.02em;
+  }
+  .jgw-ba__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .jgw-ba__field {
+    min-width: 0;
+  }
+  .jgw-ba__field--wide {
+    grid-column: 1/-1;
+  }
+  .jgw-ba__label,
+  .jgw-ba__question {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .jgw-ba__req {
+    margin-left: 3px;
+    color: #8a5800;
+  }
+  .jgw-ba__hint {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .jgw-ba
+    :is(input[type="text"], input[type="email"], input[type="tel"], textarea) {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 16px;
+    border: 1px solid #9eadaf;
+    border-radius: 6px;
+    background: #f7f9f8;
+    color: var(--ink);
+    caret-color: var(--ink);
+    font:
+      400 1rem/1.4 "Roboto",
+      Arial,
+      sans-serif;
+    box-shadow: none;
+  }
+  .jgw-ba textarea {
+    min-height: 128px;
+    resize: vertical;
+  }
+  .jgw-ba :is(input, textarea)::placeholder {
+    color: #546466;
+    opacity: 1;
+  }
+  .jgw-ba :is(input, textarea):focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 2px;
+    border-color: var(--ink);
+  }
+  .jgw-ba
+    :is(
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      textarea
+    ):focus {
+    background: #fff;
+    border-color: var(--ink);
+  }
+  .jgw-ba__choices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 22px;
+  }
+  .jgw-ba__choices--single {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .jgw-ba__choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: 52px;
+    padding: 14px 8px;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+    cursor: pointer;
+    line-height: 1.4;
+    transition: background-color 0.18s ease;
+  }
+  .jgw-ba__choice:has(:checked) {
+    background: #fff7cf;
+  }
+  .jgw-ba__choice:focus-within {
+    outline: 2px solid var(--yellow);
+    outline-offset: -2px;
+  }
+  .jgw-ba__choice :is(input[type="radio"], input[type="checkbox"]) {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    margin: 2px 0 0;
+    accent-color: var(--ink);
+  }
+  .jgw-ba__choice strong {
+    display: block;
+    font-weight: 500;
+  }
+  .jgw-ba__choice small {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .jgw-ba__gcash-qr {
+    display: none;
+    padding: 16px 8px 22px 38px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .jgw-ba__choice:has(input[value="GCash"]:checked) + .jgw-ba__gcash-qr {
+    display: block;
+  }
+  .jgw-ba__gcash-qr-frame {
+    width: min(100%, 320px);
+    aspect-ratio: 831 / 1100;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+  }
+  .jgw-ba__gcash-qr img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+  }
+  .jgw-ba__gcash-qr a {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--ink);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .jgw-ba__gcash-qr a:focus-visible {
+    outline: 2px solid var(--yellow);
+    outline-offset: 4px;
+  }
+  .jgw-ba__conditional {
+    margin-top: 16px;
+  }
+  .jgw-ba__conditional[hidden] {
+    display: none;
+  }
+  .jgw-ba__upload {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    border: 1px dashed #95a6a8;
+    border-radius: 8px;
+    background: #f7f9f8;
+    color: var(--ink);
+    font:
+      400 0.875rem/1.4 "Roboto",
+      Arial,
+      sans-serif;
+  }
+  .jgw-ba__upload::file-selector-button {
+    min-height: 40px;
+    margin-right: 14px;
+    padding: 8px 16px;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    font:
+      700 0.875rem/1.25 "Roboto",
+      Arial,
+      sans-serif;
+    cursor: pointer;
+  }
+  .jgw-ba__agreement {
+    display: grid;
+    gap: 10px;
+  }
+  .jgw-ba__actions {
+    padding-top: 28px;
+  }
+  .jgw-ba__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 14px 22px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--ink);
+    font:
+      700 0.875rem/1.25 "Roboto",
+      Arial,
+      sans-serif;
+    cursor: pointer;
+    transition:
+      transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.24s ease;
+  }
+  .jgw-ba__button:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 4px;
+  }
+  .jgw-ba__button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+    transform: none;
+  }
+  .jgw-ba .jgw-ba__status {
+    max-width: 52ch;
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: #fff4c4;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .jgw-ba__status[data-state="error"] {
+    background: #fff0eb;
+    color: #793522;
+  }
+  .jgw-ba__status[data-state="success"] {
+    background: #f1f6e8;
+    color: #264a2d;
+  }
+  .jgw-ba__status[hidden] {
+    display: none;
+  }
+  .jgw-ba .jgw-ba__fineprint {
+    max-width: 58ch;
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .jgw-ba__trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  @media (hover: hover) {
+    .jgw-ba__button:hover {
+      transform: translateY(-2px);
+      background: #ffd52b;
+    }
+    .jgw-ba__choice:hover {
+      background: #f7f8f5;
+    }
+  }
+  @media (max-width: 1000px) {
+    .jgw-ba__main {
+      grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+      gap: 40px;
+    }
+    .jgw-ba__fields,
+    .jgw-ba__choices {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 760px) {
+    .jgw-ba__wrap {
+      padding-inline: 24px;
+    }
+    .jgw-ba__hero-inner,
+    .jgw-ba__main {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .jgw-ba__hero-inner {
+      gap: 28px;
+      padding-block: 64px 56px;
+    }
+    .jgw-ba__title {
+      font-size: clamp(1.75rem, 1.15rem + 3vw, 2rem);
+    }
+    .jgw-ba__facts {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+      padding-block: 28px;
+    }
+    .jgw-ba__fact,
+    .jgw-ba__fact:first-child {
+      padding: 0 0 18px;
+      border: 0;
+      border-bottom: 1px solid #cad3d3;
+    }
+    .jgw-ba__fact:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+    .jgw-ba__main {
+      gap: 32px;
+      padding-block: 56px 80px;
+    }
+    .jgw-ba__aside {
+      position: static;
+      padding-top: 0;
+    }
+    .jgw-ba__aside h2 {
+      font-size: 2rem;
+    }
+    .jgw-ba__section {
+      padding: 28px 0 32px;
+    }
+    .jgw-ba .jgw-ba__section-title {
+      margin-bottom: 20px;
+      font-size: 1.75rem;
+    }
+    .jgw-ba__fields {
+      gap: 18px;
+    }
+    .jgw-ba__label,
+    .jgw-ba__question {
+      margin-bottom: 7px;
+      font-size: 1rem;
+    }
+    .jgw-ba
+      :is(
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea
+      ) {
+      min-height: 44px;
+      padding: 9px 14px;
+    }
+    .jgw-ba__button {
+      min-height: 44px;
+      padding: 11px 18px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jgw-ba__button,
+    .jgw-ba__choice {
+      transition: none;
+    }
+    .jgw-ba__button:hover {
+      transform: none;
+    }
+  }
+  .jgw-ba__success { position: fixed; inset: 0; width: min(680px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 56px 56px 40px; overflow-y: auto; border: 0; border-top: 6px solid var(--yellow); border-radius: 20px; background: #fff; color: var(--ink); text-align: center; font: 400 1rem/1.5 'Roboto', Arial, sans-serif; box-shadow: 0 24px 80px rgba(0,15,19,.24); }
+  .jgw-ba__success::backdrop { background: rgba(0,15,19,.76); }
+  .jgw-ba__success-close { position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--rule); border-radius: 50%; background: #fff; color: var(--ink); cursor: pointer; }
+  .jgw-ba__success-close svg { width: 20px; height: 20px; }
+  .jgw-ba__success-close:hover { background: #f3f5f2; }
+  .jgw-ba__success-close:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  .jgw-ba__success-art { position: relative; display: grid; place-items: center; width: 176px; height: 144px; margin: 0 auto 24px; }
+  .jgw-ba__success-mark { width: 112px; height: 112px; overflow: visible; }
+  .jgw-ba__success-mark circle { fill: var(--yellow); }
+  .jgw-ba__success-mark path { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 0; }
+  .jgw-ba__success-art i { position: absolute; left: 50%; top: 50%; width: 7px; height: 15px; border-radius: 2px; background: var(--yellow); transform: translate(var(--x), var(--y)) rotate(var(--r)); }
+  .jgw-ba__success-art i:nth-of-type(even) { background: var(--ink); width: 5px; height: 10px; }
+  .jgw-ba .jgw-ba__success h2 { margin: 0 0 18px; font: 400 clamp(2rem, 4vw, 2.75rem)/1.12 'Abril Fatface', Georgia, serif; letter-spacing: -.025em; text-wrap: balance; outline: none; }
+  .jgw-ba .jgw-ba__success p { max-width: 44ch; margin: 0 auto 18px; color: var(--muted); }
+  .jgw-ba .jgw-ba__success .jgw-ba__success-next { margin-top: 24px; padding: 18px 22px; border-radius: 10px; background: #f4f5f1; font-size: .9375rem; }
+  .jgw-ba .jgw-ba__success .jgw-ba__success-next strong { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 700; }
+  .jgw-ba__success .jgw-ba__button { width: 100%; margin-top: 10px; }
+  body:has(.jgw-ba__success[open]) { overflow: hidden; }
+  .jgw-ba__success[open] { animation: jgw-ba-dialog-in .28s cubic-bezier(.16,1,.3,1) both; }
+  .jgw-ba__success[open] .jgw-ba__success-mark path { animation: jgw-ba-check-in .55s .12s ease-out both; }
+  .jgw-ba__success[open] .jgw-ba__success-art i { animation: jgw-ba-confetti .75s cubic-bezier(.16,1,.3,1) both; }
+  @keyframes jgw-ba-dialog-in { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes jgw-ba-check-in { from { stroke-dashoffset: 60; } to { stroke-dashoffset: 0; } }
+  @keyframes jgw-ba-confetti { from { opacity: 0; transform: translate(0,0) rotate(0); } 35% { opacity: 1; } to { opacity: 1; transform: translate(var(--x),var(--y)) rotate(var(--r)); } }
+  @media (max-width: 600px) { .jgw-ba__success { padding: 52px 24px 28px; border-radius: 16px; } .jgw-ba__success-art { margin-bottom: 18px; height: 124px; } .jgw-ba .jgw-ba__success .jgw-ba__success-next { padding: 16px; } }
+  @media (prefers-reduced-motion: reduce) { .jgw-ba__success[open], .jgw-ba__success[open] .jgw-ba__success-mark path, .jgw-ba__success[open] .jgw-ba__success-art i { animation: none; } }
+</style>
+
+<section class="jgw-ba" aria-labelledby="jgw-ba-title">
+  <header class="jgw-ba__hero">
+    <div class="jgw-ba__wrap jgw-ba__hero-inner">
+      <h1 class="jgw-ba__title" id="jgw-ba-title">
+        Brand Audit: Let's Get You Ready for 2027.
+      </h1>
+      <div class="jgw-ba__hero-copy">
+        <p class="jgw-ba__lead">2027 is coming. Is your brand ready?</p>
+        <p>
+          Before you start planning for the year ahead, take a step back and
+          assess where your brand stands today.
+        </p>
+        <p>
+          Join us for Brand Audit: Let's Get You Ready for 2027, a workshop
+          designed to help you evaluate your brand, identify opportunities for
+          improvement, and build a stronger foundation for your next year's
+          strategy.
+        </p>
+      </div>
+    </div>
+  </header>
+  <div class="jgw-ba__event">
+    <dl class="jgw-ba__wrap jgw-ba__facts">
+      <div class="jgw-ba__fact">
+        <dt>Date</dt>
+        <dd>Friday, November 27, 2026</dd>
+      </div>
+      <div class="jgw-ba__fact">
+        <dt>Venue</dt>
+        <dd>1907, One Park Drive, BGC, Taguig</dd>
+      </div>
+      <div class="jgw-ba__fact jgw-ba__fact--offer">
+        <dt>Limited-time offer</dt>
+        <dd>₱1,000 per head</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="jgw-ba__wrap jgw-ba__main">
+    <div class="jgw-ba__aside">
+      <h2>Reserve your place.</h2>
+      <p>
+        Complete the form to register your interest. Please make sure the
+        details you provide are accurate.
+      </p>
+      <span class="jgw-ba__aside-line" aria-hidden="true"></span>
+    </div>
+
+    <form
+      class="jgw-ba__form"
+      data-api-url="https://jgw-website-server.vercel.app/api/register"
+      onsubmit="return false;"
+    >
+      <div class="jgw-ba__trap" aria-hidden="true">
+        <label for="jgw-ba-company-website">Leave this field blank</label
+        ><input
+          id="jgw-ba-company-website"
+          name="company_website"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+        />
+      </div>
+      <section
+        class="jgw-ba__section"
+        aria-labelledby="jgw-ba-participant-title"
+      >
+        <h2 class="jgw-ba__section-title" id="jgw-ba-participant-title">
+          Participant information
+        </h2>
+        <div class="jgw-ba__fields">
+          <div class="jgw-ba__field">
+            <label class="jgw-ba__label" for="jgw-ba-name"
+              >Full Name
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            ><input
+              id="jgw-ba-name"
+              name="full_name"
+              type="text"
+              autocomplete="name"
+              required
+            />
+          </div>
+          <div class="jgw-ba__field">
+            <label class="jgw-ba__label" for="jgw-ba-email"
+              >Email Address
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            ><input
+              id="jgw-ba-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="jgw-ba__field">
+            <label class="jgw-ba__label" for="jgw-ba-phone"
+              >Contact Number
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            ><input
+              id="jgw-ba-phone"
+              name="contact_number"
+              type="tel"
+              autocomplete="tel"
+              required
+            />
+          </div>
+          <div class="jgw-ba__field">
+            <label class="jgw-ba__label" for="jgw-ba-company"
+              >Company/Organization
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            ><input
+              id="jgw-ba-company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+              required
+            />
+          </div>
+          <div class="jgw-ba__field jgw-ba__field--wide">
+            <label class="jgw-ba__label" for="jgw-ba-role"
+              >Job Title/Role
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            ><input
+              id="jgw-ba-role"
+              name="job_title"
+              type="text"
+              autocomplete="organization-title"
+              required
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="jgw-ba__section" aria-labelledby="jgw-ba-brand-title">
+        <h2 class="jgw-ba__section-title" id="jgw-ba-brand-title">
+          Brand information
+        </h2>
+        <div class="jgw-ba__fields">
+          <div class="jgw-ba__field jgw-ba__field--wide">
+            <label class="jgw-ba__label" for="jgw-ba-brand"
+              >Brand/Business Name
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            ><input id="jgw-ba-brand" name="brand_name" type="text" required />
+          </div>
+          <div class="jgw-ba__field jgw-ba__field--wide">
+            <p class="jgw-ba__question" id="jgw-ba-industry-label">
+              What industry does your brand belong to?
+              <span class="jgw-ba__req" aria-hidden="true">*</span>
+            </p>
+            <div
+              class="jgw-ba__choices"
+              role="radiogroup"
+              aria-labelledby="jgw-ba-industry-label"
+            >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="industry"
+                  value="Beauty & Personal Care"
+                  required
+                /><span>Beauty &amp; Personal Care</span></label
+              >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="industry"
+                  value="Food & Beverages"
+                /><span>Food &amp; Beverages</span></label
+              >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="industry"
+                  value="Fashion & Lifestyle"
+                /><span>Fashion &amp; Lifestyle</span></label
+              >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="industry"
+                  value="Retail & E-commerce"
+                /><span>Retail &amp; E-commerce</span></label
+              >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="industry"
+                  value="Health & Wellness"
+                /><span>Health &amp; Wellness</span></label
+              >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="industry"
+                  value="Professional Services"
+                /><span>Professional Services</span></label
+              >
+              <label class="jgw-ba__choice"
+                ><input type="radio" name="industry" value="Technology" /><span
+                  >Technology</span
+                ></label
+              >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="industry"
+                  value="Other"
+                  data-industry-other
+                /><span>Other</span></label
+              >
+            </div>
+            <div class="jgw-ba__conditional" data-industry-detail hidden>
+              <label class="jgw-ba__label" for="jgw-ba-industry-other"
+                >Please specify your industry</label
+              ><input
+                id="jgw-ba-industry-other"
+                name="industry_other"
+                type="text"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="jgw-ba__field jgw-ba__field--wide">
+            <label class="jgw-ba__label" for="jgw-ba-links"
+              >Please share your brand's website and social media links.
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            >
+            <p class="jgw-ba__hint">
+              You may include your website, Facebook, Instagram, TikTok, or
+              other relevant platforms.
+            </p>
+            <textarea
+              id="jgw-ba-links"
+              name="website_social_links"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="jgw-ba__section"
+        aria-labelledby="jgw-ba-registration-title"
+      >
+        <h2 class="jgw-ba__section-title" id="jgw-ba-registration-title">
+          Registration details
+        </h2>
+        <div class="jgw-ba__fields">
+          <div class="jgw-ba__field jgw-ba__field--wide">
+            <p class="jgw-ba__question" id="jgw-ba-count-label">
+              How many participants are you registering?
+              <span class="jgw-ba__req" aria-hidden="true">*</span>
+            </p>
+            <div
+              class="jgw-ba__choices jgw-ba__choices--single"
+              role="radiogroup"
+              aria-labelledby="jgw-ba-count-label"
+            >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="participants"
+                  value="1"
+                  required
+                /><span>1 participant</span></label
+              >
+              <label class="jgw-ba__choice"
+                ><input type="radio" name="participants" value="2" /><span
+                  >2 participants</span
+                ></label
+              >
+              <label class="jgw-ba__choice"
+                ><input type="radio" name="participants" value="3+" /><span
+                  >3 or more participants</span
+                ></label
+              >
+            </div>
+          </div>
+          <div
+            class="jgw-ba__field jgw-ba__field--wide jgw-ba__conditional"
+            data-additional-names
+            hidden
+          >
+            <label class="jgw-ba__label" for="jgw-ba-additional"
+              >Names of additional participants
+              <span class="jgw-ba__req" aria-hidden="true">*</span></label
+            ><textarea
+              id="jgw-ba-additional"
+              name="additional_participants"
+              rows="3"
+              disabled
+            ></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="jgw-ba__section" aria-labelledby="jgw-ba-payment-title">
+        <h2 class="jgw-ba__section-title" id="jgw-ba-payment-title">
+          Payment details
+        </h2>
+        <div class="jgw-ba__fields">
+          <div class="jgw-ba__field jgw-ba__field--wide">
+            <p class="jgw-ba__question" id="jgw-ba-payment-label">
+              Preferred Payment Method
+              <span class="jgw-ba__req" aria-hidden="true">*</span>
+            </p>
+            <div
+              class="jgw-ba__choices jgw-ba__choices--single"
+              role="radiogroup"
+              aria-labelledby="jgw-ba-payment-label"
+            >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="payment_method"
+                  value="GCash"
+                  required
+                /><span>Online Payment — GCash</span></label
+              >
+              <div class="jgw-ba__gcash-qr">
+                <div class="jgw-ba__gcash-qr-frame">
+                  <img
+                    src="https://cdn.prod.website-files.com/654879169973ca2687439f30/6aeaed1707e61507e442eaae_viber_image_2026-11-04_16-21-06-517.jpg"
+                    alt="GCash InstaPay QR code and recipient details for the workshop payment"
+                    width="831"
+                    height="1600"
+                    loading="lazy"
+                  />
+                </div>
+                <a
+                  href="https://cdn.prod.website-files.com/654879169973ca2687439f30/6aeaed1707e61507e442eaae_viber_image_2026-11-04_16-21-06-517.jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Open GCash QR full size</a
+                >
+              </div>
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="payment_method"
+                  value="Bank transfer"
+                /><span
+                  ><strong>Online Payment — Bank transfer</strong
+                  ><small
+                    >Chinabank · 118800013365 · JG Worldwide Incorporated</small
+                  ></span
+                ></label
+              >
+              <label class="jgw-ba__choice"
+                ><input
+                  type="radio"
+                  name="payment_method"
+                  value="On-site"
+                /><span
+                  >On-site Payment — Pay in person on the day of the
+                  workshop</span
+                ></label
+              >
+            </div>
+          </div>
+          <div class="jgw-ba__field jgw-ba__field--wide">
+            <label class="jgw-ba__label" for="jgw-ba-proof"
+              >Upload Proof of Payment</label
+            >
+            <p class="jgw-ba__hint">
+              Please upload a screenshot or receipt of your payment once
+              completed. PNG, JPEG, WebP, or PDF, up to 3 MB.
+            </p>
+            <input
+              class="jgw-ba__upload"
+              id="jgw-ba-proof"
+              name="proof_of_payment"
+              type="file"
+              accept="image/png,image/jpeg,image/webp,application/pdf"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="jgw-ba__section"
+        aria-labelledby="jgw-ba-confirmation-title"
+      >
+        <h2 class="jgw-ba__section-title" id="jgw-ba-confirmation-title">
+          Reservation confirmation
+        </h2>
+        <p class="jgw-ba__question" id="jgw-ba-agreement-label">
+          Registration Agreement
+          <span class="jgw-ba__req" aria-hidden="true">*</span>
+        </p>
+        <div
+          class="jgw-ba__agreement"
+          role="group"
+          aria-labelledby="jgw-ba-agreement-label"
+        >
+          <label class="jgw-ba__choice"
+            ><input
+              type="checkbox"
+              name="confirm_accuracy"
+              value="yes"
+              required
+            /><span
+              >I confirm that the information I provided is accurate.</span
+            ></label
+          >
+          <label class="jgw-ba__choice"
+            ><input
+              type="checkbox"
+              name="confirm_verification"
+              value="yes"
+              required
+            /><span
+              >I understand that my reservation will be confirmed once my
+              registration and payment have been verified.</span
+            ></label
+          >
+          <label class="jgw-ba__choice"
+            ><input
+              type="checkbox"
+              name="confirm_policy"
+              value="yes"
+              required
+            /><span
+              >I understand that cancellations and refund requests will be
+              subject to the organizer's stated policy.</span
+            ></label
+          >
+        </div>
+      </section>
+
+      <div class="jgw-ba__actions">
+        <button class="jgw-ba__button" type="button" data-submit-button>
+          <span data-button-label>Register your interest</span>
+        </button>
+        <p class="jgw-ba__status" role="status" data-form-status hidden></p>
+        <p class="jgw-ba__fineprint">
+          Your slot will be confirmed once your registration and payment have
+          been verified.
+        </p>
+      </div>
+    </form>
+  </div>
+  <dialog class="jgw-ba__success" aria-labelledby="jgw-ba-success-title" aria-describedby="jgw-ba-success-description" data-success-dialog>
+    <div class="jgw-ba__success-art" aria-hidden="true">
+      <svg class="jgw-ba__success-mark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48"/><path d="m29 51 14 14 28-30"/></svg>
+      <i style="--x:-84px;--y:-48px;--r:-25deg"></i><i style="--x:72px;--y:-55px;--r:30deg"></i><i style="--x:82px;--y:32px;--r:65deg"></i><i style="--x:-87px;--y:33px;--r:-40deg"></i><i style="--x:35px;--y:-79px;--r:20deg"></i><i style="--x:-44px;--y:-75px;--r:70deg"></i>
+    </div>
+    <h2 id="jgw-ba-success-title" tabindex="-1" autofocus>Registration received.</h2>
+    <p id="jgw-ba-success-description">Thank you for registering for Brand Audit: Let’s Get You Ready for 2027!</p>
+    <p class="jgw-ba__success-next"><strong>What happens next?</strong>Your slot will be confirmed after your registration and payment have been verified.</p>
+    <button class="jgw-ba__button" type="button" data-close-success>Back to registration</button>
+    <button class="jgw-ba__success-close" type="button" data-close-success aria-label="Close registration confirmation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+  </dialog>
+</section>
+
+<script>
+  (() => {
+    document.querySelectorAll(".jgw-ba").forEach((root) => {
+      const form = root.querySelector("form");
+      const otherRadio = form.querySelector("[data-industry-other]");
+      const otherWrap = form.querySelector("[data-industry-detail]");
+      const otherInput = otherWrap.querySelector("input");
+      const namesWrap = form.querySelector("[data-additional-names]");
+      const namesInput = namesWrap.querySelector("textarea");
+      const status = form.querySelector("[data-form-status]");
+      const button = form.querySelector("[data-submit-button]");
+      const buttonLabel = form.querySelector("[data-button-label]");
+      const proofInput = form.querySelector('[name="proof_of_payment"]');
+      const successDialog = root.querySelector('[data-success-dialog]');
+      root.querySelectorAll('[data-close-success]').forEach((button) => button.addEventListener('click', () => successDialog.close()));
+      let busy = false;
+
+      function showStatus(message, state) {
+        status.textContent = message;
+        status.dataset.state = state;
+        status.hidden = false;
+        status.scrollIntoView({ behavior: "auto", block: "nearest" });
+      }
+
+      function syncConditionalFields() {
+        const showOther = otherRadio.checked;
+        otherWrap.hidden = !showOther;
+        otherInput.disabled = !showOther;
+        otherInput.required = showOther;
+        const count = form.querySelector(
+          '[name="participants"]:checked',
+        )?.value;
+        const showNames = count === "2" || count === "3+";
+        namesWrap.hidden = !showNames;
+        namesInput.disabled = !showNames;
+        namesInput.required = showNames;
+      }
+
+      form.addEventListener("change", syncConditionalFields);
+      form.addEventListener("input", () => {
+        status.hidden = true;
+      });
+      button.addEventListener("click", () => form.requestSubmit());
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (busy) return;
+        const apiUrl = form.dataset.apiUrl?.trim();
+        if (!apiUrl) {
+          showStatus(
+            "Registration is not available yet. Please try again later.",
+            "error",
+          );
+          return;
+        }
+        const proof = proofInput.files?.[0];
+        if (proof && proof.size > 3 * 1024 * 1024) {
+          showStatus("Proof of payment must be 3 MB or smaller.", "error");
+          return;
+        }
+        busy = true;
+        button.disabled = true;
+        buttonLabel.textContent = "Sending registration…";
+        status.hidden = true;
+        try {
+          let response;
+          try {
+            response = await fetch(apiUrl, {
+              method: "POST",
+              body: new FormData(form),
+              headers: { Accept: "application/json" },
+            });
+          } catch {
+            throw new Error(
+              "We could not reach the registration service. Please check your connection and try again.",
+            );
+          }
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result.ok) {
+            throw new Error(
+              result.error ||
+                "We could not save your registration. Please try again.",
+            );
+          }
+          form.reset();
+          syncConditionalFields();
+          buttonLabel.textContent = "Registration received";
+          successDialog.showModal();
+          showStatus(
+            "Thank you for registering. Your slot will be confirmed after your registration and payment have been verified.",
+            "success",
+          );
+        } catch (error) {
+          button.disabled = false;
+          buttonLabel.textContent = "Register your interest";
+          showStatus(
+            error instanceof Error
+              ? error.message
+              : "We could not save your registration. Please try again.",
+            "error",
+          );
+        } finally {
+          busy = false;
+        }
+      });
+      syncConditionalFields();
+    });
+  })();
+</script>
