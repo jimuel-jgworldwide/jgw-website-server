@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { signOut } from '../actions';
 import AdminLogo from '../logo';
-import { ADMIN_COOKIE, dataClient, getAdminUser } from '../../../lib/admin.mjs';
+import { dataClient } from '../../../lib/admin.mjs';
+import { currentAdmin } from '../../../lib/admin-session';
+import { SubmitButton, PendingLink, DownloadProof } from '../ui';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,8 +24,7 @@ function Detail({ label, value }) {
 }
 
 export default async function RegistrationPage({ params }) {
-  const accessToken = (await cookies()).get(ADMIN_COOKIE)?.value;
-  const user = await getAdminUser(accessToken);
+  const user = await currentAdmin();
   if (!user) redirect('/admin/login');
 
   const { id } = await params;
@@ -48,11 +48,11 @@ export default async function RegistrationPage({ params }) {
       <header className="admin-header">
         <div className="admin-wrap admin-header-inner">
           <Link href="/admin" aria-label="All Brand Audit registrations"><AdminLogo className="admin-header-logo" /></Link>
-          <form action={signOut}><button className="admin-signout" type="submit">Sign out</button></form>
+          <form action={signOut}><SubmitButton className="admin-signout" pendingLabel="Signing out…">Sign out</SubmitButton></form>
         </div>
       </header>
       <div className="admin-wrap admin-content admin-detail-content">
-        <Link className="admin-back" href="/admin">All registrations</Link>
+        <PendingLink className="admin-back" href="/admin">All registrations</PendingLink>
         <div className="admin-title-row">
           <div>
             <h1>{row.brand_name}</h1>
@@ -86,8 +86,9 @@ export default async function RegistrationPage({ params }) {
             <Detail label="Participants" value={row.participants} />
             <Detail label="Additional participants" value={row.additional_participants} />
             <Detail label="Payment method" value={row.payment_method} />
+            <Detail label="Workshop fee" value="₱1,000 per person" />
             <Detail label="Proof of payment" value={row.proof_path
-              ? <a className="admin-text-link" href={`/admin/proof/${row.id}`}>Download proof</a>
+              ? <DownloadProof href={`/admin/proof/${row.id}`} />
               : 'No proof uploaded'} />
           </dl>
         </section>

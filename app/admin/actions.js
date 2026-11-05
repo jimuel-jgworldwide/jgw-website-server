@@ -1,13 +1,13 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 import {
   ADMIN_COOKIE,
-  authClient,
   isAllowedAdmin,
   parseAdminIds,
 } from '../../lib/admin.mjs';
+import { sessionClient } from '../../lib/admin-session';
 
 export async function signIn(formData) {
   const email = formData.get('email');
@@ -23,8 +23,9 @@ export async function signIn(formData) {
   }
 
   let result;
+  const client = await sessionClient();
   try {
-    result = await authClient().auth.signInWithPassword({
+    result = await client.auth.signInWithPassword({
       email: email.trim(),
       password,
     });
@@ -34,22 +35,21 @@ export async function signIn(formData) {
 
   if (result.error || !result.data.session?.access_token ||
       !isAllowedAdmin(result.data.user, ids)) {
+    await client.auth.signOut({ scope: 'local' });
     redirect('/admin/login?error=invalid');
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(ADMIN_COOKIE, result.data.session.access_token, {
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/admin',
-    maxAge: Math.max(1, Math.min(result.data.session.expires_in ?? 3600, 3600)),
-  });
-  redirect('/admin');
+  cookieStore.set(ADMIN_COOKIE, '', { path: '/admin', maxAge: 0 });
+  redirect('/admin', RedirectType.replace);
 }
 
 export async function signOut() {
+  const client = await sessionClient();
+  await client.auth.signOut({ scope: 'local' });
   const cookieStore = await cookies();
+  cookieStore.getAll().filter(({ name }) => /^sb-.*-auth-token(?:\.\d+)?$/.test(name))
+    .forEach(({ name }) => cookieStore.set(name, '', { path: '/', maxAge: 0 }));
   cookieStore.set(ADMIN_COOKIE, '', {
     httpOnly: true,
     sameSite: 'strict',
@@ -57,5 +57,5 @@ export async function signOut() {
     path: '/admin',
     maxAge: 0,
   });
-  redirect('/admin/login');
+  redirect('/admin/login', RedirectType.replace);
 }

@@ -5,9 +5,23 @@ import {
   normalizePage,
   parseAdminIds,
   proofMetadata,
+  normalizeSearch, pageSize, paginationWindow,
 } from '../lib/admin.mjs';
 
 const adminId = 'f97ed9da-b30b-4745-9509-2762a81a317f';
+
+test('search cannot inject PostgREST filter expressions', () => {
+  assert.equal(normalizeSearch('test),id.eq.abc'), 'testid.eq.abc');
+  assert.equal(normalizeSearch(['x']), '');
+  assert.equal(normalizeSearch('x'.repeat(200)).length, 100);
+});
+
+test('page size is bounded and pagination remains small for large datasets', () => {
+  assert.equal(pageSize('100'), 100);
+  assert.equal(pageSize('100000'), 25);
+  assert.deepEqual(paginationWindow(50, 100), [1, null, 49, 50, 51, null, 100]);
+  assert.deepEqual(paginationWindow(1, 1), [1]);
+});
 
 test('only configured Supabase Auth user IDs can access admin data', () => {
   const ids = parseAdminIds(` ${adminId.toUpperCase()}, invalid, `);
