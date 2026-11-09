@@ -61,7 +61,7 @@ export function AdminFilters({ search, payment, size }) {
   }
   return <form action="/admin" onSubmit={apply} className="admin-filters" aria-busy={pending}>
     <label className="admin-search"><Search size={17} aria-hidden="true" /><span className="admin-sr-only">Search registrations</span><input name="q" defaultValue={search} placeholder="Search brand, name, email…" maxLength={100} /></label>
-    <label className="admin-select-label"><span className="admin-sr-only">Payment method</span><select name="payment" defaultValue={payment}><option value="">All payment methods</option><option>GCash</option><option>Bank transfer</option><option>On-site</option></select></label>
+    <label className="admin-select-label"><span className="admin-sr-only">Payment method</span><select name="payment" defaultValue={payment}><option value="">All payment methods</option><option>GCash</option><option>Bank transfer</option></select></label>
     <label className="admin-select-label"><span className="admin-sr-only">Rows per page</span><select name="size" defaultValue={size}><option value="25">25 per page</option><option value="50">50 per page</option><option value="100">100 per page</option></select></label>
     <button className="admin-control admin-filter-apply" disabled={pending} type="submit">{pending && <LoaderCircle className="admin-spin" size={16} />}{pending ? 'Loading…' : 'Apply'}</button>
   </form>;
