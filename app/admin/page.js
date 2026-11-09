@@ -16,7 +16,7 @@ export default async function AdminPage({ searchParams }) {
   const page = normalizePage(params.page);
   const size = pageSize(params.size);
   const search = normalizeSearch(params.q);
-  const payment = ['GCash', 'Bank transfer', 'On-site'].includes(params.payment) ? params.payment : '';
+  const payment = ['GCash', 'Bank transfer'].includes(params.payment) ? params.payment : '';
   const start = (page - 1) * size;
   function pageUrl(number) {
     const query = new URLSearchParams({ page: String(number), size: String(size) });

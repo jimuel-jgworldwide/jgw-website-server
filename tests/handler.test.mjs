@@ -11,7 +11,7 @@ function validForm(withProof = false) {
     full_name: 'Jane Doe', email: 'jane@example.com', contact_number: '+63 917 123 4567',
     company: 'Example Inc.', job_title: 'Founder', brand_name: 'Example Brand',
     industry: 'Technology', website_social_links: 'https://example.com',
-    participants: '1', payment_method: 'On-site', confirm_accuracy: 'yes',
+    participants: '1', payment_method: 'GCash', confirm_accuracy: 'yes',
     confirm_verification: 'yes', confirm_policy: 'yes',
   })) form.set(key, value);
   if (withProof) {
@@ -117,4 +117,16 @@ test('returns a helpful validation error without contacting Supabase', async () 
   assert.equal(response.status, 400);
   assert.equal(called, false);
   assert.match((await response.json()).error, /email/i);
+});
+
+test('rejects an on-site payment without contacting Supabase', async () => {
+  const form = validForm();
+  form.set('payment_method', 'On-site');
+  let called = false;
+  const response = await handleRegistration(request(ORIGIN, form), {
+    allowedOrigins, getClient: () => { called = true; },
+  });
+  assert.equal(response.status, 400);
+  assert.equal(called, false);
+  assert.match((await response.json()).error, /payment method/i);
 });

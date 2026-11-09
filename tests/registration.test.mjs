@@ -14,7 +14,7 @@ function validForm() {
     industry: 'Technology',
     website_social_links: 'https://example.com',
     participants: '1',
-    payment_method: 'On-site',
+    payment_method: 'GCash',
     confirm_accuracy: 'yes',
     confirm_verification: 'yes',
     confirm_policy: 'yes',
@@ -49,11 +49,13 @@ test('requires industry detail when Other is selected', () => {
   assert.equal(parseRegistration(form).data.industry_other, 'Education');
 });
 
-test('rejects missing agreement and invalid payment choice', () => {
+test('rejects missing agreement, on-site payment, and invalid payment choices', () => {
   const form = validForm();
   form.delete('confirm_policy');
   assert.throws(() => parseRegistration(form), InputError);
   form.set('confirm_policy', 'yes');
+  form.set('payment_method', 'On-site');
+  assert.throws(() => parseRegistration(form), InputError);
   form.set('payment_method', 'crypto');
   assert.throws(() => parseRegistration(form), InputError);
 });
