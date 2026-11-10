@@ -594,7 +594,7 @@
     <div class="jgw-ba__aside">
       <h2>Reserve your place.</h2>
       <p>
-        Complete the form to register your interest. Please make sure the
+        Just three details, then choose how to pay. Please make sure the
         details you provide are accurate.
       </p>
       <span class="jgw-ba__aside-line" aria-hidden="true"></span>
@@ -620,7 +620,7 @@
         aria-labelledby="jgw-ba-participant-title"
       >
         <h2 class="jgw-ba__section-title" id="jgw-ba-participant-title">
-          Participant information
+          Your details
         </h2>
         <div class="jgw-ba__fields">
           <div class="jgw-ba__field">
@@ -647,207 +647,12 @@
               required
             />
           </div>
-          <div class="jgw-ba__field">
-            <label class="jgw-ba__label" for="jgw-ba-phone"
-              >Contact Number
-              <span class="jgw-ba__req" aria-hidden="true">*</span></label
-            ><input
-              id="jgw-ba-phone"
-              name="contact_number"
-              type="tel"
-              autocomplete="tel"
-              required
-            />
-          </div>
-          <div class="jgw-ba__field">
-            <label class="jgw-ba__label" for="jgw-ba-company"
-              >Company/Organization
-              <span class="jgw-ba__req" aria-hidden="true">*</span></label
-            ><input
-              id="jgw-ba-company"
-              name="company"
-              type="text"
-              autocomplete="organization"
-              required
-            />
-          </div>
           <div class="jgw-ba__field jgw-ba__field--wide">
-            <label class="jgw-ba__label" for="jgw-ba-role"
-              >Job Title/Role
-              <span class="jgw-ba__req" aria-hidden="true">*</span></label
-            ><input
-              id="jgw-ba-role"
-              name="job_title"
-              type="text"
-              autocomplete="organization-title"
-              required
-            />
+            <label class="jgw-ba__label" for="jgw-ba-brand">Business name <span class="jgw-ba__req" aria-hidden="true">*</span></label>
+            <input id="jgw-ba-brand" name="brand_name" type="text" autocomplete="organization" maxlength="160" required />
           </div>
         </div>
-      </section>
-
-      <section class="jgw-ba__section" aria-labelledby="jgw-ba-brand-title">
-        <h2 class="jgw-ba__section-title" id="jgw-ba-brand-title">
-          Brand information
-        </h2>
-        <div class="jgw-ba__fields">
-          <div class="jgw-ba__field jgw-ba__field--wide">
-            <label class="jgw-ba__label" for="jgw-ba-brand"
-              >Brand/Business Name
-              <span class="jgw-ba__req" aria-hidden="true">*</span></label
-            ><input id="jgw-ba-brand" name="brand_name" type="text" required />
-          </div>
-          <div class="jgw-ba__field jgw-ba__field--wide">
-            <p class="jgw-ba__question" id="jgw-ba-industry-label">
-              What industry does your brand belong to?
-              <span class="jgw-ba__req" aria-hidden="true">*</span>
-            </p>
-            <div
-              class="jgw-ba__choices"
-              role="radiogroup"
-              aria-labelledby="jgw-ba-industry-label"
-            >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="industry"
-                  value="Beauty & Personal Care"
-                  required
-                /><span>Beauty &amp; Personal Care</span></label
-              >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="industry"
-                  value="Food & Beverages"
-                /><span>Food &amp; Beverages</span></label
-              >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="industry"
-                  value="Fashion & Lifestyle"
-                /><span>Fashion &amp; Lifestyle</span></label
-              >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="industry"
-                  value="Retail & E-commerce"
-                /><span>Retail &amp; E-commerce</span></label
-              >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="industry"
-                  value="Health & Wellness"
-                /><span>Health &amp; Wellness</span></label
-              >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="industry"
-                  value="Professional Services"
-                /><span>Professional Services</span></label
-              >
-              <label class="jgw-ba__choice"
-                ><input type="radio" name="industry" value="Technology" /><span
-                  >Technology</span
-                ></label
-              >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="industry"
-                  value="Other"
-                  data-industry-other
-                /><span>Other</span></label
-              >
-            </div>
-            <div class="jgw-ba__conditional" data-industry-detail hidden>
-              <label class="jgw-ba__label" for="jgw-ba-industry-other"
-                >Please specify your industry</label
-              ><input
-                id="jgw-ba-industry-other"
-                name="industry_other"
-                type="text"
-                disabled
-              />
-            </div>
-          </div>
-          <div class="jgw-ba__field jgw-ba__field--wide">
-            <label class="jgw-ba__label" for="jgw-ba-links"
-              >Please share your brand's website and social media links.
-              <span class="jgw-ba__req" aria-hidden="true">*</span></label
-            >
-            <p class="jgw-ba__hint">
-              You may include your website, Facebook, Instagram, TikTok, or
-              other relevant platforms.
-            </p>
-            <textarea
-              id="jgw-ba-links"
-              name="website_social_links"
-              rows="5"
-              required
-            ></textarea>
-          </div>
-        </div>
-      </section>
-
-      <section
-        class="jgw-ba__section"
-        aria-labelledby="jgw-ba-registration-title"
-      >
-        <h2 class="jgw-ba__section-title" id="jgw-ba-registration-title">
-          Registration details
-        </h2>
-        <div class="jgw-ba__fields">
-          <div class="jgw-ba__field jgw-ba__field--wide">
-            <p class="jgw-ba__question" id="jgw-ba-count-label">
-              How many participants are you registering?
-              <span class="jgw-ba__req" aria-hidden="true">*</span>
-            </p>
-            <div
-              class="jgw-ba__choices jgw-ba__choices--single"
-              role="radiogroup"
-              aria-labelledby="jgw-ba-count-label"
-            >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="participants"
-                  value="1"
-                  required
-                /><span>1 participant</span></label
-              >
-              <label class="jgw-ba__choice"
-                ><input type="radio" name="participants" value="2" /><span
-                  >2 participants</span
-                ></label
-              >
-              <label class="jgw-ba__choice"
-                ><input type="radio" name="participants" value="3+" /><span
-                  >3 or more participants</span
-                ></label
-              >
-            </div>
-          </div>
-          <div
-            class="jgw-ba__field jgw-ba__field--wide jgw-ba__conditional"
-            data-additional-names
-            hidden
-          >
-            <label class="jgw-ba__label" for="jgw-ba-additional"
-              >Names of additional participants
-              <span class="jgw-ba__req" aria-hidden="true">*</span></label
-            ><textarea
-              id="jgw-ba-additional"
-              name="additional_participants"
-              rows="3"
-              disabled
-            ></textarea>
-          </div>
-        </div>
+        <p class="jgw-ba__hint">One registration per person · ₱1,000 per head. Your confirmation will be sent to your email.</p>
       </section>
 
       <section class="jgw-ba__section" aria-labelledby="jgw-ba-payment-title">
@@ -1008,11 +813,6 @@
   (() => {
     document.querySelectorAll(".jgw-ba").forEach((root) => {
       const form = root.querySelector("form");
-      const otherRadio = form.querySelector("[data-industry-other]");
-      const otherWrap = form.querySelector("[data-industry-detail]");
-      const otherInput = otherWrap.querySelector("input");
-      const namesWrap = form.querySelector("[data-additional-names]");
-      const namesInput = namesWrap.querySelector("textarea");
       const status = form.querySelector("[data-form-status]");
       const button = form.querySelector("[data-submit-button]");
       const buttonLabel = form.querySelector("[data-button-label]");
@@ -1028,21 +828,6 @@
         status.scrollIntoView({ behavior: "auto", block: "nearest" });
       }
 
-      function syncConditionalFields() {
-        const showOther = otherRadio.checked;
-        otherWrap.hidden = !showOther;
-        otherInput.disabled = !showOther;
-        otherInput.required = showOther;
-        const count = form.querySelector(
-          '[name="participants"]:checked',
-        )?.value;
-        const showNames = count === "2" || count === "3+";
-        namesWrap.hidden = !showNames;
-        namesInput.disabled = !showNames;
-        namesInput.required = showNames;
-      }
-
-      form.addEventListener("change", syncConditionalFields);
       form.addEventListener("input", () => {
         status.hidden = true;
       });
@@ -1088,7 +873,6 @@
             );
           }
           form.reset();
-          syncConditionalFields();
           buttonLabel.textContent = "Registration received";
           successDialog.showModal();
           showStatus(
@@ -1108,7 +892,6 @@
           busy = false;
         }
       });
-      syncConditionalFields();
     });
   })();
 </script>

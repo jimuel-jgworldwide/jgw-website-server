@@ -33,6 +33,15 @@ test('normalizes a valid single-participant registration', () => {
   assert.equal(proof, null);
 });
 
+test('accepts the short form and defaults to one participant without invented details', () => {
+  const form = validForm();
+  for (const key of ['contact_number', 'company', 'job_title', 'industry', 'website_social_links', 'participants']) form.delete(key);
+  const { data } = parseRegistration(form);
+  assert.equal(data.participants, '1');
+  assert.equal(data.brand_name, 'Example Brand');
+  for (const key of ['contact_number', 'company', 'job_title', 'industry', 'website_social_links']) assert.equal(data[key], null);
+});
+
 test('requires extra names when registering more than one person', () => {
   const form = validForm();
   form.set('participants', '2');
