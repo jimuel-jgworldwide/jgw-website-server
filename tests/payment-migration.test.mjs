@@ -22,5 +22,10 @@ test('migration queues emails atomically and concurrent claims/approvals are ide
     assert.equal((await db.query('select reviewed_by from brand_audit_registrations where id=$1', [id])).rows[0].reviewed_by, id);
     await db.query("update brand_audit_email_outbox set status='failed' where kind='approval'");
     assert.equal((await db.query("select * from claim_brand_audit_email($1,'approval')", [id])).rows.length, 1);
+    const shortMigration = await readFile(new URL('../supabase/004_short_registration_form.sql', import.meta.url), 'utf8');
+    await db.exec(shortMigration); await db.exec(shortMigration);
+    assert.equal((await db.query('select company from brand_audit_registrations where id=$1', [id])).rows[0].company, 'Company');
+    await db.query(`insert into public.brand_audit_registrations(id,full_name,email,brand_name,participants,payment_method,confirm_accuracy,confirm_verification,confirm_policy) values('00000000-0000-0000-0000-000000000002','Short form','short@example.test','Business','1','GCash',true,true,true)`);
+    assert.equal((await db.query("select contact_number from brand_audit_registrations where email='short@example.test'")).rows[0].contact_number, null);
   } finally { await db.close(); }
 });
