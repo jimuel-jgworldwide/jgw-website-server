@@ -41,7 +41,14 @@ export function ReviewPanel({ entry, onUpdate }) {
     } catch (e) { setMessage(e.message || 'Could not complete this action. Refresh to check its status.'); }
     finally { setBusy(''); }
   }
+  const awaitingPayment = entry.payment_method === null && entry.payment_status !== 'approved';
+  const receipt = entry.emails?.find(job => job.kind === 'receipt');
+  const sendingReceipt = receipt?.status === 'sending' && Date.now() - Date.parse(receipt.claimed_at) < 300000;
   return <section className="admin-review-panel"><h3>Payment review</h3>
+    {awaitingPayment ? <>
+      <p>Awaiting payment proof. {receipt?.status === 'sent' ? 'Payment instructions sent.' : 'Payment instructions have not been marked as sent.'}</p>
+      {entry.reviewReady && receipt?.status !== 'sent' && <button className="admin-control" disabled={Boolean(busy) || sendingReceipt} onClick={() => act('receipt')}>{busy === 'receipt' || sendingReceipt ? 'Sending…' : 'Retry payment email'}</button>}
+    </> : <>
     <span className={`admin-review-status ${entry.payment_status === 'approved' ? 'is-approved' : ''}`}>{entry.payment_status === 'approved' ? <CheckCircle2 size={16} /> : <Mail size={16} />}{entry.payment_status === 'approved' ? 'Approved · registration confirmed' : 'Pending review'}</span>
     {!entry.reviewReady ? <p>Payment review is not configured yet. Install migration 003 before approving entries.</p> : <>
       {entry.payment_status !== 'approved' ? <><p>Check the proof and the actual payment received. The fee is ₱1,000 per head for every participant.</p><label className="admin-review-check"><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I have verified that the full payment was received.</label><button className="admin-control admin-approve" disabled={!checked || Boolean(busy)} onClick={() => act('approve')}>{busy === 'approve' && <LoaderCircle className="admin-spin" size={16} />}Approve payment &amp; confirm registration</button></> : <p>Reviewed {entry.reviewed_at ? new Date(entry.reviewed_at).toLocaleString('en-PH', { timeZone: 'Asia/Manila' }) : ''}</p>}
@@ -50,6 +57,7 @@ export function ReviewPanel({ entry, onUpdate }) {
         const processing = job?.status === 'sending' && Date.now() - Date.parse(job.claimed_at) < 300000;
         return <div key={kind}><span>Approval confirmation<small>{job?.status || 'Not queued'}</small></span>{job?.status !== 'sent' && <button className="admin-control" disabled={Boolean(busy) || processing} onClick={() => act(kind)}>{busy === kind ? 'Sending…' : processing ? 'Sending…' : job ? 'Retry email' : 'Send email'}</button>}</div>;
       })}</div>}
+    </>}
     </>}
     {message && <p className="admin-review-message" role="status">{message}</p>}
   </section>;

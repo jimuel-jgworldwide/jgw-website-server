@@ -594,8 +594,7 @@
     <div class="jgw-ba__aside">
       <h2>Reserve your place.</h2>
       <p>
-        Just three details, then choose how to pay. Please make sure the
-        details you provide are accurate.
+        Share your details now. We’ll email the payment instructions and a link to upload your receipt when you’re ready.
       </p>
       <span class="jgw-ba__aside-line" aria-hidden="true"></span>
     </div>
@@ -652,136 +651,20 @@
             <input id="jgw-ba-brand" name="brand_name" type="text" autocomplete="organization" maxlength="160" required />
           </div>
         </div>
-        <p class="jgw-ba__hint">One registration per person · ₱1,000 per head. Your confirmation will be sent to your email.</p>
+        <p class="jgw-ba__hint">One registration per person · ₱1,000 per head. Payment follows by email.</p>
       </section>
 
-      <section class="jgw-ba__section" aria-labelledby="jgw-ba-payment-title">
-        <h2 class="jgw-ba__section-title" id="jgw-ba-payment-title">
-          Payment details
-        </h2>
-        <div class="jgw-ba__fields">
-          <div class="jgw-ba__field jgw-ba__field--wide">
-            <p class="jgw-ba__question" id="jgw-ba-payment-label">
-              Preferred Payment Method
-              <span class="jgw-ba__req" aria-hidden="true">*</span>
-            </p>
-            <div
-              class="jgw-ba__choices jgw-ba__choices--single"
-              role="radiogroup"
-              aria-labelledby="jgw-ba-payment-label"
-            >
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="payment_method"
-                  value="GCash"
-                  required
-                /><span>Online Payment — GCash</span></label
-              >
-              <div class="jgw-ba__gcash-qr">
-                <div class="jgw-ba__gcash-qr-frame">
-                  <img
-                    src="https://cdn.prod.website-files.com/654879169973ca2687439f30/6aeaed1707e61507e442eaae_viber_image_2026-11-04_16-21-06-517.jpg"
-                    alt="GCash InstaPay QR code and recipient details for the workshop payment"
-                    width="831"
-                    height="1600"
-                    loading="lazy"
-                  />
-                </div>
-                <a
-                  href="https://cdn.prod.website-files.com/654879169973ca2687439f30/6aeaed1707e61507e442eaae_viber_image_2026-11-04_16-21-06-517.jpg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >Open GCash QR full size</a
-                >
-              </div>
-              <label class="jgw-ba__choice"
-                ><input
-                  type="radio"
-                  name="payment_method"
-                  value="Bank transfer"
-                /><span
-                  ><strong>Online Payment — Bank transfer</strong
-                  ><small
-                    >Chinabank · 118800013365 · JG Worldwide Incorporated</small
-                  ></span
-                ></label
-              >
-            </div>
-          </div>
-          <div class="jgw-ba__field jgw-ba__field--wide">
-            <label class="jgw-ba__label" for="jgw-ba-proof"
-              >Upload Proof of Payment</label
-            >
-            <p class="jgw-ba__hint">
-              Please upload a screenshot or receipt of your payment once
-              completed. PNG, JPEG, WebP, or PDF, up to 3 MB.
-            </p>
-            <input
-              class="jgw-ba__upload"
-              id="jgw-ba-proof"
-              name="proof_of_payment"
-              type="file"
-              accept="image/png,image/jpeg,image/webp,application/pdf"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section
-        class="jgw-ba__section"
-        aria-labelledby="jgw-ba-confirmation-title"
-      >
-        <h2 class="jgw-ba__section-title" id="jgw-ba-confirmation-title">
-          Reservation confirmation
-        </h2>
-        <p class="jgw-ba__question" id="jgw-ba-agreement-label">
-          Registration Agreement
-          <span class="jgw-ba__req" aria-hidden="true">*</span>
-        </p>
-        <div
-          class="jgw-ba__agreement"
-          role="group"
-          aria-labelledby="jgw-ba-agreement-label"
-        >
-          <label class="jgw-ba__choice"
-            ><input
-              type="checkbox"
-              name="confirm_accuracy"
-              value="yes"
-              required
-            /><span
-              >I confirm that the information I provided is accurate.</span
-            ></label
-          >
-          <label class="jgw-ba__choice"
-            ><input
-              type="checkbox"
-              name="confirm_verification"
-              value="yes"
-              required
-            /><span
-              >I understand that my reservation will be confirmed once my
-              registration and payment have been verified.</span
-            ></label
-          >
-          <label class="jgw-ba__choice"
-            ><input
-              type="checkbox"
-              name="confirm_policy"
-              value="yes"
-              required
-            /><span
-              >I understand that cancellations and refund requests will be
-              subject to the organizer's stated policy.</span
-            ></label
-          >
-        </div>
-      </section>
+      <input type="hidden" name="payment_step" value="later" />
+      <div class="jgw-ba__section">
+        <label class="jgw-ba__choice">
+          <input type="checkbox" name="signup_agreement" value="yes" required />
+          <span>I confirm my details are accurate. I understand my seat is confirmed after payment verification and cancellations or refunds follow the organizer’s policy.</span>
+        </label>
+      </div>
 
       <div class="jgw-ba__actions">
         <button class="jgw-ba__button" type="button" data-submit-button>
-          <span data-button-label>Register your interest</span>
+          <span data-button-label>Register now</span>
         </button>
         <p class="jgw-ba__status" role="status" data-form-status hidden></p>
         <p class="jgw-ba__fineprint">
@@ -797,7 +680,7 @@
       <i style="--x:-84px;--y:-48px;--r:-25deg"></i><i style="--x:72px;--y:-55px;--r:30deg"></i><i style="--x:82px;--y:32px;--r:65deg"></i><i style="--x:-87px;--y:33px;--r:-40deg"></i><i style="--x:35px;--y:-79px;--r:20deg"></i><i style="--x:-44px;--y:-75px;--r:70deg"></i>
     </div>
     <h2 id="jgw-ba-success-title" tabindex="-1" autofocus>Registration received.</h2>
-    <p id="jgw-ba-success-description">You’re one step closer to getting your brand ready for 2027!</p>
+    <p id="jgw-ba-success-description" data-payment-email></p>
     <p class="jgw-ba__success-copy">Your registration for Brand Audit: Let’s Get You Ready for 2027 has been received. Get ready for fresh insights, practical tips, and strategies to help your brand level up!</p>
     <div class="jgw-ba__success-event" aria-label="Workshop details">
       <p>November 27, 2026 (Friday)</p>
@@ -816,7 +699,6 @@
       const status = form.querySelector("[data-form-status]");
       const button = form.querySelector("[data-submit-button]");
       const buttonLabel = form.querySelector("[data-button-label]");
-      const proofInput = form.querySelector('[name="proof_of_payment"]');
       const successDialog = root.querySelector('[data-success-dialog]');
       root.querySelectorAll('[data-close-success]').forEach((button) => button.addEventListener('click', () => successDialog.close()));
       let busy = false;
@@ -841,11 +723,6 @@
             "Registration is not available yet. Please try again later.",
             "error",
           );
-          return;
-        }
-        const proof = proofInput.files?.[0];
-        if (proof && proof.size > 3 * 1024 * 1024) {
-          showStatus("Proof of payment must be 3 MB or smaller.", "error");
           return;
         }
         busy = true;
@@ -874,14 +751,18 @@
           }
           form.reset();
           buttonLabel.textContent = "Registration received";
+          const next = result.paymentEmailSent
+            ? "Check your inbox for payment instructions and your private link to upload your receipt."
+            : "Your signup is saved. If the payment email doesn’t arrive, contact hello@jgworldwide.ph.";
+          successDialog.querySelector("[data-payment-email]").textContent = next;
           successDialog.showModal();
           showStatus(
-            "Thank you for registering. Your slot will be confirmed after your registration and payment have been verified.",
+            next,
             "success",
           );
         } catch (error) {
           button.disabled = false;
-          buttonLabel.textContent = "Register your interest";
+          buttonLabel.textContent = "Register now";
           showStatus(
             error instanceof Error
               ? error.message

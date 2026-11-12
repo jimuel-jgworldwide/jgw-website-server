@@ -17,14 +17,20 @@ export async function POST(request, { params }) {
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) return Response.json({ error: 'Invalid registration.' }, { status: 400, headers });
   const input = await request.json().catch(() => null);
-  if (!['approve','approval'].includes(input?.action)) return Response.json({ error: 'Invalid action.' }, { status: 400, headers });
+  if (!['approve','approval','receipt'].includes(input?.action)) return Response.json({ error: 'Invalid action.' }, { status: 400, headers });
   if (input.action === 'approve' && input.confirmReviewed !== true) return Response.json({ error: 'Confirm that the payment has been reviewed.' }, { status: 400, headers });
   try {
     const client = dataClient();
-    const record = await client.from('brand_audit_registrations').select('id,payment_status').eq('id', id).maybeSingle();
+    const record = await client.from('brand_audit_registrations').select('id,payment_status,payment_method').eq('id', id).maybeSingle();
     if (record.error) throw record.error;
     if (!record.data) return Response.json({ error: 'Registration not found.' }, { status: 404, headers });
+    if (input.action === 'receipt') {
+      if (record.data.payment_method !== null || record.data.payment_status !== 'pending') return Response.json({ error: 'This registration is no longer awaiting payment.' }, { status: 409, headers });
+      const delivery = await deliverEmail(client, id, 'receipt');
+      return Response.json({ ok: true, emailStatus: delivery.status }, { headers });
+    }
     if (input.action === 'approve') {
+      if (record.data.payment_method === null) return Response.json({ error: 'Wait for the registrant to upload proof of payment.' }, { status: 409, headers });
       const result = await client.from('brand_audit_registrations').update({ payment_status: 'approved', reviewed_at: new Date().toISOString(), reviewed_by: user.id }).eq('id', id).eq('payment_status', 'pending');
       if (result.error) throw result.error;
     } else if (input.action === 'approval' && record.data.payment_status !== 'approved') {
