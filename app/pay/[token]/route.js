@@ -28,9 +28,13 @@ function page(title, body, status = 200, showPayment = false) {
     .instructions{padding-top:1rem;border-top:1px solid var(--ink)}
     .fee{display:flex;align-items:baseline;gap:.55rem;margin:.65rem 0 1rem;color:var(--muted)}
     .fee strong{color:var(--ink);font-size:1.65rem}
-    details{border-bottom:1px solid var(--rule)}
-    summary{cursor:pointer;font-weight:700;padding:.75rem .125rem;min-height:48px}
-    details p{padding:0 .125rem 1rem;overflow-wrap:anywhere}
+    fieldset{min-width:0;margin:0;padding:0;border:0}
+    legend{padding:0;font-weight:700}
+    .method-option{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:.65rem;border-bottom:1px solid var(--rule)}
+    .method-option input{width:1.15rem;min-height:auto;height:1.15rem;margin:0;accent-color:var(--ink)}
+    .method-option label{margin:0;padding:.75rem 0;min-height:48px;cursor:pointer}
+    .method-details{display:none;grid-column:1/-1;padding:.25rem 0 1rem;overflow-wrap:anywhere}
+    .method-option input:checked ~ .method-details{display:block}
     .qr{display:block;width:min(100%,240px);height:auto;margin:.25rem auto 1rem}
     form{min-width:0;background:white;border:1px solid var(--rule);border-radius:16px;padding:clamp(1rem,4vw,1.75rem)}
     label{display:block;margin-top:1.25rem;margin-bottom:.35rem;font-weight:700}
@@ -66,19 +70,28 @@ function page(title, body, status = 200, showPayment = false) {
 const received = () => page('Payment proof received', '<p>We’ll review your payment and email your confirmation once it’s verified.</p>');
 const unavailable = () => page('Payment link unavailable', '<p>Check the link in your email or contact <a href="mailto:hello@jgworldwide.ph">hello@jgworldwide.ph</a> for help.</p>', 404);
 
-function paymentForm(error = '') {
+function paymentForm(error = '', selectedMethod = '') {
   return page('Complete your registration', `<div class="payment-grid">
     <section class="instructions" aria-labelledby="pay-heading">
       <h2 id="pay-heading">1. Make your payment</h2>
       <p class="fee"><strong>₱1,000</strong> per head</p>
-      <details><summary>Pay with GCash</summary><a href="${gcashQr}" target="_blank" rel="noopener noreferrer" aria-label="Open full-size GCash QR"><img class="qr" src="${gcashQr}" alt="JG Worldwide GCash payment QR" width="240" height="462" loading="lazy"></a></details>
-      <details><summary>Pay by Chinabank transfer</summary><p>JG Worldwide Incorporated<br>Account number: <strong>118800013365</strong></p></details>
+      <fieldset>
+        <legend>Choose a payment method</legend>
+        <div class="method-option">
+          <input id="method-gcash" type="radio" name="payment_method" value="GCash" form="payment-proof" required${selectedMethod === 'GCash' ? ' checked' : ''}>
+          <label for="method-gcash">Pay with GCash</label>
+          <div class="method-details"><a href="${gcashQr}" target="_blank" rel="noopener noreferrer" aria-label="Open full-size GCash QR"><img class="qr" src="${gcashQr}" alt="JG Worldwide GCash payment QR" width="240" height="462" loading="lazy"></a></div>
+        </div>
+        <div class="method-option">
+          <input id="method-bank" type="radio" name="payment_method" value="Bank transfer" form="payment-proof" required${selectedMethod === 'Bank transfer' ? ' checked' : ''}>
+          <label for="method-bank">Pay by Chinabank transfer</label>
+          <div class="method-details"><p>JG Worldwide Incorporated<br>Account number: <strong>118800013365</strong></p></div>
+        </div>
+      </fieldset>
     </section>
-    <form method="post" enctype="multipart/form-data">
+    <form id="payment-proof" method="post" enctype="multipart/form-data">
       <h2>2. Upload your receipt</h2>
       ${error ? `<p role="alert">${error}</p>` : ''}
-      <label for="method">Payment method</label>
-      <select id="method" name="payment_method" required><option value="">Choose a method</option><option>GCash</option><option>Bank transfer</option></select>
       <label for="proof">Payment receipt</label>
       <input id="proof" name="proof_of_payment" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" aria-describedby="proof-hint" required>
       <p id="proof-hint" class="hint">PNG, JPEG, WebP or PDF · up to 3 MB</p>
@@ -111,6 +124,7 @@ export async function POST(request, { params }) {
   const id = paymentRegistrationId(token);
   if (!id) return unavailable();
   if (Number(request.headers.get('content-length')) > 4 * 1024 * 1024) return paymentForm('Choose a receipt under 3 MB.');
+  let method;
   try {
     const client = dataClient();
     const entry = await lookup(client, id);
@@ -118,9 +132,9 @@ export async function POST(request, { params }) {
     if (!entry || entry.payment_method !== null || entry.payment_status !== 'pending') return unavailable();
     const form = await request.formData().catch(() => null);
     if (!form) return paymentForm('Choose a payment method and a receipt to upload.');
-    const method = readPaymentMethod(form);
+    method = readPaymentMethod(form);
     const proof = await validateProof(form.get('proof_of_payment'));
-    if (!proof) return paymentForm('Choose a receipt to upload.');
+    if (!proof) return paymentForm('Choose a receipt to upload.', method);
     const path = `${id}/${randomUUID()}.${proof.extension}`;
     const bucket = client.storage.from('brand-audit-proofs');
     const uploaded = await bucket.upload(path, proof.buffer, { contentType: proof.mimeType, upsert: false });
@@ -142,7 +156,7 @@ export async function POST(request, { params }) {
     }
     return received();
   } catch (error) {
-    if (error instanceof InputError) return paymentForm(error.message);
+    if (error instanceof InputError) return paymentForm(error.message, method);
     return page('Could not save payment proof', '<p>Open the link from your email again to check whether your receipt was received or to retry.</p>', 503);
   }
 }
