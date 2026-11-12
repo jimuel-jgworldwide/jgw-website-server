@@ -56,9 +56,9 @@ export default async function AdminPage({ searchParams }) {
             <tbody>{rows.map(row => <tr key={row.id}>
               <th scope="row"><DetailsButton className="admin-brand-link" id={row.id}><span><strong>{row.brand_name}</strong><small>{row.company}</small></span></DetailsButton></th>
               <td><strong>{row.full_name}</strong><small>{row.email}</small></td>
-              <td><span className="admin-payment-badge">{row.payment_method}</span></td>
+              <td><span className="admin-payment-badge">{row.payment_method ?? 'Awaiting payment'}</span></td>
               <td><span className={`admin-proof-badge ${row.proof_path ? 'has-proof' : ''}`}>{row.proof_path ? <FileCheck2 size={15} aria-hidden="true" /> : <FileMinus2 size={15} aria-hidden="true" />}{row.proof_path ? 'Attached' : 'Not uploaded'}</span></td>
-              <td><span className={`admin-review-status ${row.payment_status === 'approved' ? 'is-approved' : ''}`}>{row.payment_status === 'approved' ? 'Approved' : 'Pending review'}</span></td>
+              <td><span className={`admin-review-status ${row.payment_status === 'approved' ? 'is-approved' : ''}`}>{row.payment_status === 'approved' ? 'Approved' : row.payment_method === null ? 'Awaiting proof' : 'Pending review'}</span></td>
               <td><time dateTime={row.created_at}>{dateFormatter.format(new Date(row.created_at))}</time></td>
               <td><DetailsButton id={row.id}>View<span className="admin-sr-only"> {row.brand_name}</span></DetailsButton></td>
             </tr>)}</tbody>

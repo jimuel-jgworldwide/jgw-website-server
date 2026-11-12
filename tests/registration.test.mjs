@@ -33,6 +33,17 @@ test('normalizes a valid single-participant registration', () => {
   assert.equal(proof, null);
 });
 
+test('deferred signup requires only contact details and agreement, with payment outstanding', () => {
+  const form = new FormData();
+  for (const [key, value] of Object.entries({ full_name: 'Jane Doe', email: 'jane@example.test', brand_name: 'Example', payment_step: 'later', participants: '2' })) form.set(key, value);
+  assert.throws(() => parseRegistration(form), /registration agreement/);
+  form.set('signup_agreement', 'yes');
+  const { data, proof } = parseRegistration(form);
+  assert.equal(data.payment_method, null);
+  assert.equal(data.participants, '1');
+  assert.equal(proof, null);
+});
+
 test('accepts the short form and defaults to one participant without invented details', () => {
   const form = validForm();
   for (const key of ['contact_number', 'company', 'job_title', 'industry', 'website_social_links', 'participants']) form.delete(key);

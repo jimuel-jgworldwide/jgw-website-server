@@ -27,5 +27,10 @@ test('migration queues emails atomically and concurrent claims/approvals are ide
     assert.equal((await db.query('select company from brand_audit_registrations where id=$1', [id])).rows[0].company, 'Company');
     await db.query(`insert into public.brand_audit_registrations(id,full_name,email,brand_name,participants,payment_method,confirm_accuracy,confirm_verification,confirm_policy) values('00000000-0000-0000-0000-000000000002','Short form','short@example.test','Business','1','GCash',true,true,true)`);
     assert.equal((await db.query("select contact_number from brand_audit_registrations where email='short@example.test'")).rows[0].contact_number, null);
+    await db.exec(await readFile(new URL('../supabase/005_deferred_payment.sql', import.meta.url), 'utf8'));
+    const deferredId = '00000000-0000-0000-0000-000000000003';
+    await db.query(`insert into public.brand_audit_registrations(id,full_name,email,brand_name,participants,payment_method,confirm_accuracy,confirm_verification,confirm_policy) values($1,'Deferred','deferred@example.test','Business','1',null,true,true,true)`, [deferredId]);
+    assert.equal((await db.query("select kind from brand_audit_email_outbox where registration_id=$1", [deferredId])).rows[0].kind, 'receipt');
+    assert.equal((await db.query("select payment_method from brand_audit_registrations where id=$1", [id])).rows[0].payment_method, 'GCash');
   } finally { await db.close(); }
 });
